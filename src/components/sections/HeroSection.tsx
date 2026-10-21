@@ -3,7 +3,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { usePortfolio } from '@/context/PortfolioContext';
 import PortraitCard3D from '@/components/3d/PortraitCard3D';
-import MonolithScene from '@/components/3d/MonolithScene';
 import { Download, ArrowDown, MapPin, Play, Pause, ExternalLink, Globe } from 'lucide-react';
 
 export default function HeroSection() {
@@ -206,16 +205,9 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Right Column: 3D Signature Monolith & 3D Portrait Card */}
+          {/* Right Column: Clean Glass Morph Portrait Showcase */}
           <div className="lg:col-span-5 relative flex items-center justify-center pt-6 lg:pt-0">
-            {/* Background 3D Architectural Monolith */}
-            {data.theme.enable3D && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10 opacity-70 transform -translate-y-4">
-                <MonolithScene className="w-full h-full max-h-[520px]" />
-              </div>
-            )}
-
-            {/* 3D Portrait Card */}
+            {/* Elegant Glassmorphic Portrait Card */}
             <div className="relative z-10 w-full flex justify-center">
               <PortraitCard3D />
             </div>

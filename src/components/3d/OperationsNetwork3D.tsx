@@ -4,14 +4,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import {
   Globe,
-  Network,
   Navigation as NavIcon,
   MapPin,
   ExternalLink,
   ZoomIn,
   ZoomOut,
   RotateCw,
-  Compass,
   Layers,
   Sparkles,
 } from 'lucide-react';
@@ -25,7 +23,7 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
   const [activeNode, setActiveNode] = useState<number>(0);
   const [viewMode, setViewMode] = useState<'google-earth' | 'tactical'>('google-earth');
   const [isRotating, setIsRotating] = useState<boolean>(true);
-  const [zoomLevel, setZoomLevel] = useState<number>(5.8);
+  const [zoomLevel, setZoomLevel] = useState<number>(5.6);
 
   const projectNodes = [
     {
@@ -79,9 +77,9 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
     return new THREE.Vector3(x, y, z);
   };
 
-  // References to communicate with Three.js loop
+  // References to communicate with Three.js animation loop
   const targetRotationRef = useRef<{ y: number; x: number }>({ y: -3.45, x: -0.1 });
-  const cameraZRef = useRef<number>(5.8);
+  const cameraZRef = useRef<number>(5.6);
   const viewModeRef = useRef<'google-earth' | 'tactical'>(viewMode);
   const isRotatingRef = useRef<boolean>(isRotating);
 
@@ -93,18 +91,17 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
     isRotatingRef.current = isRotating;
   }, [isRotating]);
 
-  // When active node changes, smoothly fly camera/globe to face that location
+  // When active node changes, smoothly fly globe to face that coordinate
   useEffect(() => {
     const node = projectNodes[activeNode];
     const phi = (90 - node.lat) * (Math.PI / 180);
     const theta = (node.lon + 180) * (Math.PI / 180);
-    // Calculate rotation angles to bring this point to front
     const targetY = -(theta - Math.PI / 2);
     const targetX = (Math.PI / 2 - phi) * 0.8;
     targetRotationRef.current = { y: targetY, x: targetX };
   }, [activeNode]);
 
-  // Adjust camera distance for zoom
+  // Camera distance zoom
   useEffect(() => {
     cameraZRef.current = zoomLevel;
   }, [zoomLevel]);
@@ -125,34 +122,37 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
     camera.position.set(0, 0, cameraZRef.current);
     camera.lookAt(0, 0, 0);
 
-    // 3. WebGL Renderer
+    // 3. WebGL Renderer with High-Precision Tone Mapping
     let renderer: THREE.WebGLRenderer;
     try {
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setSize(width, height);
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.25;
+      renderer.toneMappingExposure = 1.35;
       container.appendChild(renderer.domElement);
     } catch {
       return;
     }
 
-    // 4. Lighting Setup
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+    // 4. Realistic Celestial Lighting
+    // Ambient light simulating deep space starlight
+    const ambientLight = new THREE.AmbientLight(0xdde5ff, 1.1);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(0xffffff, 3.5);
-    sunLight.position.set(8, 5, 6);
+    // Warm Directional Sun Light creating day/night terminator
+    const sunLight = new THREE.DirectionalLight(0xfffaed, 4.2);
+    sunLight.position.set(7, 5, 6);
     scene.add(sunLight);
 
-    const rimLight = new THREE.PointLight(0xd72e43, 4.0, 25);
-    rimLight.position.set(-6, 2, -4);
-    scene.add(rimLight);
+    // Subtle Crimson Accent Rim Light
+    const crimsonRim = new THREE.PointLight(0xd72e43, 3.5, 25);
+    crimsonRim.position.set(-7, 2, -5);
+    scene.add(crimsonRim);
 
     // 5. Main Rotating Operations Group
     const networkGroup = new THREE.Group();
-    // Default initial orientation: Indonesia faces front
+    // Default initial orientation: Indonesia archipelago faces camera
     networkGroup.rotation.y = -3.45;
     networkGroup.rotation.x = -0.1;
     scene.add(networkGroup);
@@ -160,44 +160,61 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
     // Texture Loader for Photorealistic Google Earth Satellite Mode
     const textureLoader = new THREE.TextureLoader();
 
-    // --- GOOGLE EARTH SATELLITE LAYER ---
+    // --- REALISTIC GOOGLE EARTH SATELLITE LAYER ---
     const earthGeo = new THREE.SphereGeometry(2.0, 64, 64);
     const earthDayTex = textureLoader.load('/textures/earth/earth_atmos_2048.jpg');
     const earthNormalTex = textureLoader.load('/textures/earth/earth_normal_2048.jpg');
     const earthLightsTex = textureLoader.load('/textures/earth/earth_lights_2048.png');
+    const earthSpecularTex = textureLoader.load('/textures/earth/earth_specular_2048.jpg');
 
     const earthMat = new THREE.MeshStandardMaterial({
       map: earthDayTex,
       normalMap: earthNormalTex,
+      normalScale: new THREE.Vector2(0.9, 0.9),
+      roughnessMap: earthSpecularTex,
       roughness: 0.65,
       metalness: 0.1,
       emissiveMap: earthLightsTex,
       emissive: new THREE.Color(0xffeedd),
-      emissiveIntensity: 0.75,
+      emissiveIntensity: 0.9,
     });
     const earthMesh = new THREE.Mesh(earthGeo, earthMat);
     networkGroup.add(earthMesh);
 
-    // Atmospheric Cloud Layer
-    const cloudGeo = new THREE.SphereGeometry(2.03, 48, 48);
+    // Atmospheric Cloud Layer (Drifting independently)
+    const cloudGeo = new THREE.SphereGeometry(2.035, 64, 64);
     const earthCloudsTex = textureLoader.load('/textures/earth/earth_clouds_1024.png');
     const cloudMat = new THREE.MeshStandardMaterial({
       map: earthCloudsTex,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.45,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
     const cloudMesh = new THREE.Mesh(cloudGeo, cloudMat);
     networkGroup.add(cloudMesh);
 
-    // Soft Atmospheric Outer Glow (Fresnel Halo)
-    const atmosGeo = new THREE.SphereGeometry(2.14, 48, 48);
-    const atmosMat = new THREE.MeshBasicMaterial({
-      color: 0x3882ff,
+    // Realistic Rayleigh Scattering Atmospheric Outer Glow (Fresnel Shader)
+    const atmosGeo = new THREE.SphereGeometry(2.18, 64, 64);
+    const atmosMat = new THREE.ShaderMaterial({
+      vertexShader: `
+        varying vec3 vNormal;
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vNormal;
+        void main() {
+          float intensity = pow(0.68 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.2);
+          gl_FragColor = vec4(0.28, 0.62, 1.0, 1.0) * intensity;
+        }
+      `,
+      blending: THREE.AdditiveBlending,
       side: THREE.BackSide,
       transparent: true,
-      opacity: 0.22,
+      depthWrite: false,
     });
     const atmosMesh = new THREE.Mesh(atmosGeo, atmosMat);
     networkGroup.add(atmosMesh);
@@ -213,7 +230,7 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
     const tacticalMesh = new THREE.Mesh(tacticalGeo, tacticalMat);
     networkGroup.add(tacticalMesh);
 
-    // Orbital Tactical Rings
+    // Orbital Tactical Latitude Rings
     const ringGeo = new THREE.RingGeometry(2.35, 2.38, 64);
     const ringMat = new THREE.MeshBasicMaterial({
       color: 0xd8dde5,
@@ -236,7 +253,7 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
     secondRingMesh.rotation.x = Math.PI / 2.3;
     networkGroup.add(secondRingMesh);
 
-    // 6. Node Coordinates (Real Indonesian Lat/Lon projected on sphere)
+    // 6. Real Indonesian Project Coordinates (projected on 3D sphere)
     const nodeCoords = projectNodes.map((n) => latLonToVector3(n.lat, n.lon, 2.02));
     const nodeMeshes: THREE.Mesh[] = [];
 
@@ -246,7 +263,7 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
       const sphereMat = new THREE.MeshStandardMaterial({
         color: idx === 0 ? 0xd72e43 : 0xff3855,
         emissive: idx === 0 ? 0xd72e43 : 0xa11c2e,
-        emissiveIntensity: 2.0,
+        emissiveIntensity: 2.2,
         roughness: 0.1,
       });
       const nodeSphere = new THREE.Mesh(sphereGeo, sphereMat);
@@ -255,7 +272,7 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
       nodeMeshes.push(nodeSphere);
 
       // Outer Radar Pulse Ring
-      const pulseGeo = new THREE.RingGeometry(0.09, 0.12, 32);
+      const pulseGeo = new THREE.RingGeometry(0.09, 0.13, 32);
       const pulseMat = new THREE.MeshBasicMaterial({
         color: 0xd72e43,
         side: THREE.DoubleSide,
@@ -299,13 +316,13 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
     networkGroup.add(packet1);
     networkGroup.add(packet2);
 
-    // Ambient floating orbital dust
-    const particleCount = 100;
+    // Ambient floating orbital starfield
+    const particleCount = 120;
     const particlePositions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i += 3) {
-      particlePositions[i] = (Math.random() - 0.5) * 10;
-      particlePositions[i + 1] = (Math.random() - 0.5) * 10;
-      particlePositions[i + 2] = (Math.random() - 0.5) * 8;
+      particlePositions[i] = (Math.random() - 0.5) * 12;
+      particlePositions[i + 1] = (Math.random() - 0.5) * 12;
+      particlePositions[i + 2] = (Math.random() - 0.5) * 9;
     }
     const particleGeo = new THREE.BufferGeometry();
     particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
@@ -313,18 +330,22 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
       color: 0xd8dde5,
       size: 0.03,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.4,
     });
     const particleField = new THREE.Points(particleGeo, particleMat);
     networkGroup.add(particleField);
 
-    // 8. Pointer Drag Interaction
+    // 8. Physical Pointer Drag with Realistic Momentum & Inertia
     let isDragging = false;
     let prevMouseX = 0;
     let prevMouseY = 0;
+    let velocityX = 0;
+    let velocityY = 0;
 
     const onMouseDown = (e: MouseEvent) => {
       isDragging = true;
+      velocityX = 0;
+      velocityY = 0;
       prevMouseX = e.clientX;
       prevMouseY = e.clientY;
     };
@@ -333,8 +354,10 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
       if (!isDragging) return;
       const deltaX = e.clientX - prevMouseX;
       const deltaY = e.clientY - prevMouseY;
-      networkGroup.rotation.y += deltaX * 0.005;
-      networkGroup.rotation.x += deltaY * 0.005;
+      velocityX = deltaX * 0.004;
+      velocityY = deltaY * 0.004;
+      networkGroup.rotation.y += velocityX;
+      networkGroup.rotation.x += velocityY;
       targetRotationRef.current.y = networkGroup.rotation.y;
       targetRotationRef.current.x = networkGroup.rotation.x;
       prevMouseX = e.clientX;
@@ -347,7 +370,7 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
 
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      setZoomLevel((prev) => Math.min(Math.max(prev + e.deltaY * 0.005, 3.8), 7.5));
+      setZoomLevel((prev) => Math.min(Math.max(prev + e.deltaY * 0.004, 3.6), 7.5));
     };
 
     const dom = renderer.domElement;
@@ -356,12 +379,14 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
 
-    // Touch support for mobile devices
+    // Touch support with inertia for mobile devices
     let touchStartX = 0;
     let touchStartY = 0;
     const onTouchStart = (e: TouchEvent) => {
       if (e.touches.length === 1) {
         isDragging = true;
+        velocityX = 0;
+        velocityY = 0;
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
       }
@@ -370,8 +395,10 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
       if (!isDragging || e.touches.length !== 1) return;
       const deltaX = e.touches[0].clientX - touchStartX;
       const deltaY = e.touches[0].clientY - touchStartY;
-      networkGroup.rotation.y += deltaX * 0.006;
-      networkGroup.rotation.x += deltaY * 0.006;
+      velocityX = deltaX * 0.005;
+      velocityY = deltaY * 0.005;
+      networkGroup.rotation.y += velocityX;
+      networkGroup.rotation.x += velocityY;
       targetRotationRef.current.y = networkGroup.rotation.y;
       targetRotationRef.current.x = networkGroup.rotation.x;
       touchStartX = e.touches[0].clientX;
@@ -414,17 +441,25 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
 
       // Rotate clouds slowly around Earth
       if (isGoogleEarth) {
-        cloudMesh.rotation.y = elapsed * 0.02;
+        cloudMesh.rotation.y = elapsed * 0.025;
       }
 
-      // Smooth interpolation to target fly-to coordinate when not dragging
+      // Physics momentum & Fly-To interpolation
       if (!isDragging) {
-        if (isRotatingRef.current) {
-          // Slow continuous planetary spin
-          networkGroup.rotation.y += 0.0015;
+        if (Math.abs(velocityX) > 0.0001 || Math.abs(velocityY) > 0.0001) {
+          // Gliding with physical inertia decay
+          networkGroup.rotation.y += velocityX;
+          networkGroup.rotation.x += velocityY;
+          velocityX *= 0.94;
+          velocityY *= 0.94;
+          targetRotationRef.current.y = networkGroup.rotation.y;
+          targetRotationRef.current.x = networkGroup.rotation.x;
+        } else if (isRotatingRef.current) {
+          // Continuous gentle planetary spin
+          networkGroup.rotation.y += 0.0018;
           targetRotationRef.current.y = networkGroup.rotation.y;
         } else {
-          // Fly to selected node target
+          // Smooth fly-to selected coordinate
           networkGroup.rotation.y += (targetRotationRef.current.y - networkGroup.rotation.y) * 0.05;
           networkGroup.rotation.x += (targetRotationRef.current.x - networkGroup.rotation.x) * 0.05;
         }
@@ -484,11 +519,11 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
   const activeProject = projectNodes[activeNode];
 
   return (
-    <div className={`relative w-full rounded-2xl bg-gradient-to-b from-graphite-surface via-obsidian-soft to-obsidian border border-platinum/15 p-4 sm:p-6 shadow-cinematic overflow-hidden ${className}`}>
-      {/* Top HUD Telemetry & Mode Selector Bar */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-platinum/10 pb-4">
+    <div className={`relative w-full rounded-3xl bg-white/[0.04] backdrop-blur-2xl backdrop-saturate-150 border border-white/15 p-4 sm:p-6 shadow-[0_16px_45px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.25)] overflow-hidden ${className}`}>
+      {/* Top HUD Telemetry & Mode Selector Bar - Clean Glass Morph */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-crimson/15 border border-crimson/30 text-crimson shadow-glow-crimson">
+          <div className="p-2.5 rounded-2xl bg-white/10 border border-white/20 text-crimson-light shadow-sm backdrop-blur-md">
             <Globe className="w-5 h-5" />
           </div>
           <div>
@@ -497,18 +532,18 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
               <span className="w-2 h-2 rounded-full bg-crimson animate-ping" />
             </h3>
             <p className="text-[11px] font-mono text-platinum-muted">
-              Citra Satelit 3D Interaktif · Jaringan Manajemen Operasional Zefanya Zulian
+              Citra Satelit 3D Fotorealistik · Jaringan Manajemen Operasional Zefanya Zulian
             </p>
           </div>
         </div>
 
-        {/* View Mode & Controls Toolbar */}
+        {/* View Mode & Controls Toolbar - Clear Glass */}
         <div className="flex flex-wrap items-center gap-2">
           {/* Mode Switch: Google Earth vs Tactical */}
-          <div className="p-1 rounded-xl bg-obsidian border border-platinum/15 flex items-center gap-1 text-xs">
+          <div className="p-1 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/15 flex items-center gap-1 text-xs">
             <button
               onClick={() => setViewMode('google-earth')}
-              className={`px-3 py-1.5 rounded-lg font-mono flex items-center gap-1.5 transition ${
+              className={`px-3 py-1.5 rounded-xl font-mono flex items-center gap-1.5 transition ${
                 viewMode === 'google-earth'
                   ? 'bg-crimson text-white font-bold shadow-glow-crimson'
                   : 'text-platinum-muted hover:text-white'
@@ -520,7 +555,7 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
             </button>
             <button
               onClick={() => setViewMode('tactical')}
-              className={`px-3 py-1.5 rounded-lg font-mono flex items-center gap-1.5 transition ${
+              className={`px-3 py-1.5 rounded-xl font-mono flex items-center gap-1.5 transition ${
                 viewMode === 'tactical'
                   ? 'bg-crimson text-white font-bold shadow-glow-crimson'
                   : 'text-platinum-muted hover:text-white'
@@ -535,10 +570,10 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
           {/* Auto-Rotation Toggle */}
           <button
             onClick={() => setIsRotating(!isRotating)}
-            className={`p-2 rounded-xl border transition ${
+            className={`p-2 rounded-2xl border transition ${
               isRotating
-                ? 'bg-crimson/15 border-crimson/40 text-crimson'
-                : 'bg-obsidian border-platinum/15 text-platinum-muted hover:text-white'
+                ? 'bg-crimson/20 border-crimson/40 text-crimson-light'
+                : 'bg-black/40 backdrop-blur-md border-white/15 text-platinum-muted hover:text-white'
             }`}
             title={isRotating ? 'Jeda Rotasi Otomatis' : 'Mulai Rotasi Otomatis'}
           >
@@ -546,10 +581,10 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
           </button>
 
           {/* Zoom Buttons */}
-          <div className="flex items-center rounded-xl bg-obsidian border border-platinum/15">
+          <div className="flex items-center rounded-2xl bg-black/40 backdrop-blur-md border border-white/15">
             <button
-              onClick={() => setZoomLevel((prev) => Math.max(prev - 0.6, 3.8))}
-              className="p-2 text-platinum-muted hover:text-white border-r border-platinum/10 transition"
+              onClick={() => setZoomLevel((prev) => Math.max(prev - 0.6, 3.6))}
+              className="p-2 text-platinum-muted hover:text-white border-r border-white/10 transition"
               title="Zoom In Satelit"
             >
               <ZoomIn className="w-4 h-4" />
@@ -575,10 +610,10 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
               setActiveNode(node.id);
               setIsRotating(false);
             }}
-            className={`px-3 py-1 rounded-lg text-xs font-mono transition-all flex items-center gap-1.5 ${
+            className={`px-3 py-1 rounded-xl text-xs font-mono transition-all flex items-center gap-1.5 ${
               activeNode === node.id
                 ? 'bg-crimson text-white font-bold shadow-glow-crimson scale-102'
-                : 'bg-obsidian border border-platinum/10 text-platinum-muted hover:text-white hover:border-platinum/30'
+                : 'bg-white/5 border border-white/10 text-platinum hover:text-white hover:border-white/25 backdrop-blur-md'
             }`}
           >
             <MapPin className="w-3 h-3 text-crimson-light" />
@@ -591,7 +626,7 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
           href="https://earth.google.com/web/@-5.5000,111.0000,1000a,2500000d,35y,0h,20t,0r"
           target="_blank"
           rel="noopener noreferrer"
-          className="ml-auto px-3 py-1 rounded-lg text-xs font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 hover:bg-emerald-900/50 transition flex items-center gap-1.5"
+          className="ml-auto px-3 py-1 rounded-xl text-xs font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 hover:bg-emerald-900/50 backdrop-blur-md transition flex items-center gap-1.5"
           title="Buka Koridor Operasional Indonesia di Google Earth Web (earth.google.com)"
         >
           <span>earth.google.com</span>
@@ -603,40 +638,40 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
       <div className="relative w-full h-[360px] sm:h-[430px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none my-2">
         <div ref={containerRef} className="w-full h-full" />
 
-        {/* Drag & Controls Watermark */}
+        {/* Drag & Controls Watermark - Glass Morph */}
         <div className="absolute top-3 left-3 pointer-events-none flex flex-col gap-1.5">
-          <span className="text-[10px] font-mono text-platinum-muted/80 uppercase tracking-widest px-2.5 py-1 rounded-md bg-obsidian/80 border border-platinum/15 backdrop-blur-sm">
-            Putar 360° · Scroll untuk Zoom · Tekan Tombol Lokasi untuk Fly-To
+          <span className="text-[10px] font-mono text-platinum-muted uppercase tracking-widest px-3 py-1 rounded-xl bg-black/50 border border-white/15 backdrop-blur-md">
+            Putar 360° · Scroll untuk Zoom · Drag dengan Inersia Fisik
           </span>
-          <div className="inline-flex items-center gap-1.5 text-[10px] font-mono text-emerald-400 bg-emerald-950/70 border border-emerald-500/20 px-2 py-0.5 rounded backdrop-blur-sm w-fit">
+          <div className="inline-flex items-center gap-1.5 text-[10px] font-mono text-emerald-300 bg-emerald-950/70 border border-emerald-500/25 px-2.5 py-0.5 rounded-lg backdrop-blur-md w-fit">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Google Earth Satellite Telemetry Engine Active</span>
+            <span>Google Earth PBR Realistic Satellite Shading</span>
           </div>
         </div>
 
-        {/* Live Active Node Floating Overlay Card */}
-        <div className="absolute bottom-3 left-3 right-3 sm:right-auto sm:max-w-md p-4 rounded-xl bg-graphite/95 backdrop-blur-md border border-platinum/20 shadow-card-executive pointer-events-auto">
-          <div className="flex items-center justify-between gap-2 border-b border-platinum/10 pb-2 mb-2">
-            <div className="flex items-center gap-1.5 text-xs font-mono text-crimson font-bold">
-              <MapPin className="w-3.5 h-3.5" />
+        {/* Live Active Node Floating Overlay Card - Clean Glass Morph */}
+        <div className="absolute bottom-3 left-3 right-3 sm:right-auto sm:max-w-md p-4 rounded-2xl bg-black/55 backdrop-blur-2xl border border-white/20 shadow-[0_12px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.25)] pointer-events-auto">
+          <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2 mb-2">
+            <div className="flex items-center gap-1.5 text-xs font-mono text-crimson-light font-bold">
+              <MapPin className="w-3.5 h-3.5 text-crimson" />
               <span>{activeProject.name}</span>
             </div>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-500/30">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-lg bg-emerald-950/80 text-emerald-300 border border-emerald-500/30">
               {activeProject.status}
             </span>
           </div>
 
           <h4 className="text-sm font-bold text-white">{activeProject.company}</h4>
-          <p className="text-xs text-crimson font-mono mt-0.5">{activeProject.role}</p>
+          <p className="text-xs text-crimson-light font-mono mt-0.5">{activeProject.role}</p>
           <p className="text-xs text-platinum-muted mt-1 leading-relaxed">
             {activeProject.scope}
           </p>
 
-          <div className="mt-2 text-[11px] font-mono text-emerald-300/90 bg-emerald-950/30 px-2.5 py-1 rounded border border-emerald-500/20">
+          <div className="mt-2 text-[11px] font-mono text-emerald-300/90 bg-white/[0.04] px-2.5 py-1 rounded-xl border border-white/10">
             ✓ {activeProject.highlights}
           </div>
 
-          <div className="mt-3 pt-2.5 border-t border-platinum/10 flex items-center justify-between gap-2">
+          <div className="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between gap-2">
             <span className="text-[10px] font-mono text-platinum-muted/70">
               {activeProject.coords}
             </span>
@@ -646,7 +681,7 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
               href={activeProject.earthUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-crimson hover:bg-crimson-dark text-white text-xs font-mono font-semibold shadow-glow-crimson transition active:scale-95"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-crimson hover:bg-crimson-dark text-white text-xs font-mono font-semibold shadow-glow-crimson transition active:scale-95"
             >
               <span>Buka di Google Earth 3D</span>
               <ExternalLink className="w-3 h-3" />
@@ -655,21 +690,21 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
         </div>
       </div>
 
-      {/* Bottom Live Metrics & Google Earth Integration Bar */}
-      <div className="mt-2 pt-3 border-t border-platinum/10 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-        <div className="p-2.5 rounded-lg bg-obsidian border border-platinum/10">
+      {/* Bottom Live Metrics - Clear Frosted Glass Chips */}
+      <div className="mt-2 pt-3 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+        <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 backdrop-blur-md">
           <span className="text-[10px] font-mono text-platinum-muted uppercase block">Citra 3D Satelit</span>
-          <span className="text-xs sm:text-sm font-bold text-emerald-400 font-mono mt-0.5 block">Google Earth Ready</span>
+          <span className="text-xs sm:text-sm font-bold text-emerald-400 font-mono mt-0.5 block">Fotorealistik PBR</span>
         </div>
-        <div className="p-2.5 rounded-lg bg-obsidian border border-platinum/10">
+        <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 backdrop-blur-md">
           <span className="text-[10px] font-mono text-platinum-muted uppercase block">Mineral Transport</span>
           <span className="text-xs sm:text-sm font-bold text-white font-mono mt-0.5 block">10.000 Ton/Minggu</span>
         </div>
-        <div className="p-2.5 rounded-lg bg-obsidian border border-platinum/10">
+        <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 backdrop-blur-md">
           <span className="text-[10px] font-mono text-platinum-muted uppercase block">Material Procurement</span>
-          <span className="text-xs sm:text-sm font-bold text-crimson font-mono mt-0.5 block">Proyek Jembatan Maritim</span>
+          <span className="text-xs sm:text-sm font-bold text-crimson-light font-mono mt-0.5 block">Jembatan Maritim</span>
         </div>
-        <div className="p-2.5 rounded-lg bg-obsidian border border-platinum/10">
+        <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 backdrop-blur-md">
           <span className="text-[10px] font-mono text-platinum-muted uppercase block">Pusat Komando</span>
           <span className="text-xs sm:text-sm font-bold text-platinum font-mono mt-0.5 block">Bekasi Strategic HQ</span>
         </div>
