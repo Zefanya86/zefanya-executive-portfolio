@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePortfolio } from '@/context/PortfolioContext';
 import OperationsNetwork3D from '@/components/3d/OperationsNetwork3D';
-import { Network, Compass, ShieldCheck, MapPin } from 'lucide-react';
+import { Globe, MapPin, ExternalLink, ShieldCheck, Cpu } from 'lucide-react';
 
 export default function OperationsNetworkSection() {
   const { locale } = usePortfolio();
@@ -18,7 +18,7 @@ export default function OperationsNetworkSection() {
         <div className="max-w-3xl space-y-3 mb-10">
           <div className="inline-flex items-center gap-2 text-xs font-mono text-crimson tracking-widest uppercase">
             <span className="w-6 h-px bg-crimson" />
-            <span>03 // {locale === 'id' ? 'VISUALISASI 3D OPERASIONAL' : '3D OPERATIONAL INFRASTRUCTURE GRID'}</span>
+            <span>03 // {locale === 'id' ? 'VISUALISASI 3D OPERASIONAL & CITRA SATELIT' : '3D OPERATIONAL INFRASTRUCTURE & SATELLITE GRID'}</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-warmWhite">
@@ -29,9 +29,30 @@ export default function OperationsNetworkSection() {
 
           <p className="text-base sm:text-lg text-platinum-muted font-normal pt-1">
             {locale === 'id'
-              ? 'Peta 3D interaktif yang menggambarkan 3 pusat komando operasional nyata Zefanya Zulian: Manajemen Korporat Bekasi HQ, Operasional Transportasi Mineral Bayah di Banten, dan Pengadaan Material Proyek Jembatan Maritim di Kalimantan.'
-              : 'Interactive 3D model mapping Zefanya Zulian\'s actual operations: Bekasi Corporate HQ, Bayah Mineral Flow Logistics in Banten, and Maritime Bridge Material Procurement in Kalimantan.'}
+              ? 'Eksplorasi bola dunia 3D berbasis citra satelit Google Earth yang memetakan 3 pusat komando operasional nyata Zefanya Zulian: Manajemen Korporat Bekasi HQ, Operasional Transportasi Mineral Bayah di Banten, dan Pengadaan Material Proyek Jembatan Maritim di Kalimantan — lengkap dengan tautan inspeksi langsung ke Google Earth 3D (earth.google.com).'
+              : 'Interactive Google Earth 3D satellite globe mapping Zefanya Zulian\'s actual operations: Bekasi Corporate HQ, Bayah Mineral Flow Logistics in Banten, and Maritime Bridge Material Procurement in Kalimantan — with direct inspection deep-links to Google Earth 3D (earth.google.com).'}
           </p>
+
+          {/* Quick Feature Badges */}
+          <div className="flex flex-wrap items-center gap-2.5 pt-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-graphite-surface border border-platinum/15 text-xs font-mono text-platinum">
+              <Globe className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Google Earth Satellite Mode</span>
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-graphite-surface border border-platinum/15 text-xs font-mono text-platinum">
+              <Cpu className="w-3.5 h-3.5 text-crimson" />
+              <span>Tactical Supply-Chain Arcs</span>
+            </div>
+            <a
+              href="https://earth.google.com/web/@-5.5000,111.0000,1000a,2500000d,35y,0h,20t,0r"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-crimson/10 border border-crimson/30 hover:bg-crimson/20 text-xs font-mono text-crimson-light transition"
+            >
+              <span>Explore on earth.google.com</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
         </div>
 
         {/* 3D Operations Interactive Network Hub */}

@@ -55,7 +55,19 @@ export default function AdminPage() {
       id: 'jakarta-traffic-night',
       label: 'Kemacetan Jakarta Malam Hari (1080p Local MP4)',
       url: '/videos/jakarta-traffic-night.mp4',
-      badge: 'Pilihan Utama',
+      badge: 'Jakarta Traffic',
+    },
+    {
+      id: 'google-earth-satellite',
+      label: 'Google Earth Satellite Orbit View (earth.google.com / NASA 4K ISS)',
+      url: '/videos/google-earth-satellite.mp4',
+      badge: 'Google Earth 3D',
+    },
+    {
+      id: 'google-earth-orbit',
+      label: 'Google Earth Orbital Pass Sweep (NASA 1080p Local MP4)',
+      url: '/videos/google-earth-orbit.mp4',
+      badge: 'Satellite Sweep',
     },
     {
       id: 'jakarta-highway-4k',

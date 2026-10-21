@@ -4,12 +4,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import { usePortfolio } from '@/context/PortfolioContext';
 import PortraitCard3D from '@/components/3d/PortraitCard3D';
 import MonolithScene from '@/components/3d/MonolithScene';
-import { Download, ArrowDown, MapPin, Play, Pause, ExternalLink } from 'lucide-react';
+import { Download, ArrowDown, MapPin, Play, Pause, ExternalLink, Globe } from 'lucide-react';
 
 export default function HeroSection() {
   const { data, locale, t, setIsCvModalOpen } = usePortfolio();
   const [isPlaying, setIsPlaying] = useState(true);
   const [videoError, setVideoError] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState<string>(data.hero.videoUrl || '/videos/jakarta-traffic-night.mp4');
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const toggleVideo = () => {
@@ -24,14 +25,20 @@ export default function HeroSection() {
   };
 
   useEffect(() => {
+    if (data.hero.videoUrl) {
+      setSelectedVideo(data.hero.videoUrl);
+    }
+  }, [data.hero.videoUrl]);
+
+  useEffect(() => {
     if (videoRef.current) {
       videoRef.current.play().catch(() => {
         setIsPlaying(false);
       });
     }
-  }, [data.hero.videoUrl]);
+  }, [selectedVideo]);
 
-  const videoSrc = data.hero.videoUrl || '/videos/hero-cinematic.mp4';
+  const videoSrc = selectedVideo;
   const posterSrc = data.hero.fallbackPosterUrl || 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=2000&auto=format&fit=crop';
 
   return (
@@ -80,13 +87,46 @@ export default function HeroSection() {
         <div className="absolute bottom-1/3 right-1/4 w-[450px] h-[450px] bg-platinum/5 rounded-full blur-3xl pointer-events-none" />
       </div>
 
-      {/* Accessible Video Pause/Play Control (Discrete) */}
-      <div className="absolute top-24 right-6 z-20 hidden md:block">
+      {/* Accessible Video Controls & Preset Selector (Kemacetan Jakarta vs Google Earth) */}
+      <div className="absolute top-24 right-4 sm:right-6 z-20 hidden sm:flex items-center gap-2">
+        <div className="flex items-center gap-1 p-1 rounded-full bg-obsidian/85 backdrop-blur-md border border-platinum/15 shadow-card-executive">
+          <button
+            onClick={() => {
+              setSelectedVideo('/videos/jakarta-traffic-night.mp4');
+              setVideoError(false);
+            }}
+            className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 ${
+              selectedVideo === '/videos/jakarta-traffic-night.mp4'
+                ? 'bg-crimson text-white font-semibold shadow-glow-crimson'
+                : 'text-platinum-muted hover:text-white'
+            }`}
+            title="Tampilkan Kemacetan Malam Jakarta"
+          >
+            <span>🏙️ Jakarta Traffic</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setSelectedVideo('/videos/google-earth-satellite.mp4');
+              setVideoError(false);
+            }}
+            className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 ${
+              selectedVideo === '/videos/google-earth-satellite.mp4'
+                ? 'bg-crimson text-white font-semibold shadow-glow-crimson'
+                : 'text-platinum-muted hover:text-white'
+            }`}
+            title="Tampilkan Google Earth Satellite Orbit View"
+          >
+            <Globe className="w-3 h-3 text-emerald-400" />
+            <span>Google Earth</span>
+          </button>
+        </div>
+
         <button
           onClick={toggleVideo}
-          className="p-2 rounded-full bg-obsidian/70 backdrop-blur-md border border-platinum/10 text-platinum-muted hover:text-white transition"
+          className="p-2 rounded-full bg-obsidian/80 backdrop-blur-md border border-platinum/15 text-platinum-muted hover:text-white transition shadow-sm"
           aria-label={isPlaying ? 'Pause background video' : 'Play background video'}
-          title={isPlaying ? 'Pause background video' : 'Play background video'}
+          title={isPlaying ? 'Pause video' : 'Play video'}
         >
           {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
         </button>
