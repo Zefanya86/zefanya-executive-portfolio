@@ -28,7 +28,7 @@
       "id": "Hubungi Sekarang",
       "en": "Let's Connect"
     },
-    "videoUrl": "/videos/hero-cinematic.mp4",
+    "videoUrl": "/videos/jakarta-traffic-night.mp4",
     "fallbackPosterUrl": "https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=2000&auto=format&fit=crop",
     "overlayOpacity": 0.72,
     "portraitUrl": "/zefanya-portrait.jpg",
@@ -656,5 +656,5 @@
   },
   "isPublished": true,
   "publishedAt": "2026-10-21T00:00:00Z",
-  "updatedAt": "2026-10-21T04:28:42.347Z"
+  "updatedAt": "2026-10-21T04:39:24.289Z"
 }

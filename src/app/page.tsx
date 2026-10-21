@@ -1,6 +1,7 @@
 import Navigation from '@/components/ui/Navigation';
 import HeroSection from '@/components/sections/HeroSection';
 import ExecutiveIntro from '@/components/sections/ExecutiveIntro';
+import OperationsNetworkSection from '@/components/sections/OperationsNetworkSection';
 import ExperienceSection from '@/components/sections/ExperienceSection';
 import CompetenciesSection from '@/components/sections/CompetenciesSection';
 import LeadershipSection from '@/components/sections/LeadershipSection';
@@ -20,35 +21,38 @@ export default function HomePage() {
 
       {/* Main Content Flow */}
       <main id="main-content" className="relative z-10">
-        {/* Section 01: Hero */}
+        {/* Section 01: Hero with Jakarta Traffic Cinematic Cover */}
         <HeroSection />
 
-        {/* Section 02: Executive Introduction */}
+        {/* Section 02: Executive Introduction & Verified Portrait */}
         <ExecutiveIntro />
 
-        {/* Section 03: Professional Experience */}
+        {/* Section 03: 3D Tactical Operations & Logistics Grid (Meaningful 3D Visualization) */}
+        <OperationsNetworkSection />
+
+        {/* Section 04: Professional Experience */}
         <ExperienceSection />
 
-        {/* Section 04: Areas of Expertise */}
+        {/* Section 05: Areas of Expertise */}
         <CompetenciesSection />
 
-        {/* Section 05: Leadership & Organization */}
+        {/* Section 06: Leadership & Organization */}
         <LeadershipSection />
 
-        {/* Section 06: Education & Credentials */}
+        {/* Section 07: Education & Credentials */}
         <EducationSection />
 
-        {/* Section 07: Selected Achievements */}
+        {/* Section 08: Selected Achievements */}
         <AchievementsSection />
 
-        {/* Section 08: Tools & Capabilities */}
+        {/* Section 09: Tools & Capabilities */}
         <ToolsSection />
 
-        {/* Section 09: Contact & Direct Channels */}
+        {/* Section 10: Contact & Direct Channels */}
         <ContactSection />
       </main>
 
-      {/* Section 10: Minimalist Footer */}
+      {/* Footer */}
       <Footer />
     </div>
   );

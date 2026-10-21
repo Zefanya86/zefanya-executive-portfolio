@@ -52,14 +52,26 @@ export default function AdminPage() {
   // Video presets
   const videoPresets = [
     {
+      id: 'jakarta-traffic-night',
+      label: 'Kemacetan Jakarta Malam Hari (1080p Local MP4)',
+      url: '/videos/jakarta-traffic-night.mp4',
+      badge: 'Pilihan Utama',
+    },
+    {
+      id: 'jakarta-highway-4k',
+      label: 'Jakarta Highway Traffic 4K Timelapse (Local MP4)',
+      url: '/videos/jakarta-highway-timelapse.mp4',
+      badge: '4K Timelapse',
+    },
+    {
       id: 'local-cinematic',
       label: 'Cinematic City Metropolis (Local Fast 1080p)',
       url: '/videos/hero-cinematic.mp4',
-      badge: 'Rekomendasi',
+      badge: 'Metropolis',
     },
     {
       id: 'local-skylines',
-      label: 'Night Skylines & Traffic Lights (Local 1080p)',
+      label: 'Night Skylines & Architecture (Local 1080p)',
       url: '/videos/hero-night-skylines.mp4',
       badge: 'Infrastruktur',
     },
