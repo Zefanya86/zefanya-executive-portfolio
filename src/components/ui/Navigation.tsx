@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePortfolio } from '@/context/PortfolioContext';
 import { Download, Globe, Menu, X, Shield, ChevronRight } from 'lucide-react';
 
@@ -32,6 +33,8 @@ export default function Navigation() {
     setLocale(locale === 'id' ? 'en' : 'id');
   };
 
+  const portraitSrc = data.hero.portraitUrl || '/zefanya-portrait.jpg';
+
   return (
     <>
       <header
@@ -42,22 +45,26 @@ export default function Navigation() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* Brand Logo */}
+          {/* Brand Logo with Authentic Photo Avatar */}
           <Link
             href="/"
             className="flex items-center gap-3 group focus:outline-none focus:ring-1 focus:ring-crimson rounded-lg"
           >
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-graphite-surface to-obsidian border border-platinum/20 flex items-center justify-center shadow-card-executive group-hover:border-crimson/50 transition">
-              <span className="font-mono font-bold text-sm tracking-wider text-warmWhite group-hover:text-crimson transition">
-                ZZ
-              </span>
+            <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-crimson shadow-glow-crimson group-hover:scale-105 transition shrink-0 bg-graphite">
+              <Image
+                src={portraitSrc}
+                alt="Zefanya Zulian"
+                fill
+                sizes="40px"
+                className="object-cover object-top"
+              />
             </div>
             <div className="flex flex-col">
               <span className="text-sm sm:text-base font-bold tracking-wider text-warmWhite group-hover:text-platinum-bright transition uppercase">
                 {data.profile.fullName}
               </span>
-              <span className="text-[10px] font-mono tracking-widest text-platinum-muted uppercase flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-crimson" />
+              <span className="text-[10px] font-mono tracking-widest text-platinum-muted uppercase flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 <span>Executive Operations</span>
               </span>
             </div>
@@ -125,7 +132,23 @@ export default function Navigation() {
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-30 sm:hidden bg-obsidian/95 backdrop-blur-xl pt-24 px-6 pb-8 flex flex-col justify-between animate-in fade-in duration-200">
-          <div className="space-y-3">
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-graphite border border-platinum/10">
+              <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-crimson shrink-0">
+                <Image
+                  src={portraitSrc}
+                  alt="Zefanya Zulian"
+                  fill
+                  sizes="48px"
+                  className="object-cover object-top"
+                />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-white uppercase">{data.profile.fullName}</p>
+                <p className="text-xs text-crimson font-mono">General Manager</p>
+              </div>
+            </div>
+
             <p className="text-[11px] font-mono uppercase tracking-widest text-platinum-muted">
               {locale === 'id' ? 'Navigasi Portofolio' : 'Portfolio Navigation'}
             </p>

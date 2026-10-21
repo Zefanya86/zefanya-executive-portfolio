@@ -31,6 +31,8 @@ import {
   Eye,
   RefreshCw,
   MessageSquare,
+  Sparkles,
+  Check,
 } from 'lucide-react';
 
 export default function AdminPage() {
@@ -46,6 +48,34 @@ export default function AdminPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [inquiries, setInquiries] = useState<any[]>([]);
+
+  // Video presets
+  const videoPresets = [
+    {
+      id: 'local-cinematic',
+      label: 'Cinematic City Metropolis (Local Fast 1080p)',
+      url: '/videos/hero-cinematic.mp4',
+      badge: 'Rekomendasi',
+    },
+    {
+      id: 'local-skylines',
+      label: 'Night Skylines & Traffic Lights (Local 1080p)',
+      url: '/videos/hero-night-skylines.mp4',
+      badge: 'Infrastruktur',
+    },
+    {
+      id: 'pexels-urban-flow',
+      label: 'Urban Night Flow (Pexels HD CDN)',
+      url: 'https://videos.pexels.com/video-files/856356/856356-hd_1920_1080_25fps.mp4',
+      badge: 'HD Online',
+    },
+    {
+      id: 'pexels-corporate-towers',
+      label: 'Modern Corporate Towers (Pexels HD CDN)',
+      url: 'https://videos.pexels.com/video-files/854671/854671-hd_1920_1080_25fps.mp4',
+      badge: 'HD Online',
+    },
+  ];
 
   // Check current session
   useEffect(() => {
@@ -263,10 +293,10 @@ export default function AdminPage() {
     );
   }
 
-  // 2. Authenticated Admin Dashboard Workspace
+  // 2. Authenticated Admin Dashboard Workspace with 100% Functional Tabs
   const navTabs = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-    { id: 'hero', label: 'Hero & Media', icon: Video },
+    { id: 'hero', label: 'Hero & Video Cover', icon: Video },
     { id: 'profile', label: 'Profil Eksekutif', icon: User },
     { id: 'experiences', label: 'Pengalaman Kerja', icon: Briefcase },
     { id: 'competencies', label: 'Kompetensi (15)', icon: Layers },
@@ -284,18 +314,24 @@ export default function AdminPage() {
       {/* Top Admin Bar */}
       <header className="sticky top-0 z-40 bg-graphite border-b border-platinum/10 px-4 sm:px-8 py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-crimson/15 text-crimson border border-crimson/30">
-            <Shield className="w-5 h-5" />
+          <div className="relative w-9 h-9 rounded-full overflow-hidden border-2 border-crimson shrink-0 bg-obsidian">
+            <Image
+              src={data.hero.portraitUrl || '/zefanya-portrait.jpg'}
+              alt="Zefanya"
+              fill
+              sizes="36px"
+              className="object-cover object-top"
+            />
           </div>
           <div>
             <h2 className="text-sm font-bold tracking-tight text-white flex items-center gap-2">
-              <span>CMS Admin</span>
+              <span>Executive CMS</span>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-500/30 font-mono">
                 ONLINE
               </span>
             </h2>
             <p className="text-[10px] text-platinum-muted font-mono">
-              Zefanya Zulian Executive Platform
+              Zefanya Zulian — Operations Executive
             </p>
           </div>
         </div>
@@ -346,7 +382,7 @@ export default function AdminPage() {
         {/* Sidebar Nav */}
         <aside className="w-full md:w-64 bg-graphite-surface border-r border-platinum/10 p-3 md:p-4 flex md:flex-col gap-1 overflow-x-auto md:overflow-y-auto shrink-0">
           <div className="hidden md:block text-[11px] font-mono uppercase tracking-widest text-platinum-muted px-3 py-2">
-            Modul Konten
+            Modul Konten (Semua Aktif)
           </div>
           {navTabs.map((tab) => {
             const Icon = tab.icon;
@@ -381,6 +417,35 @@ export default function AdminPage() {
                   </p>
                 </div>
 
+                {/* Identity Card */}
+                <div className="p-6 rounded-2xl bg-graphite-surface border border-platinum/15 flex flex-col sm:flex-row items-center gap-6">
+                  <div className="relative w-24 h-28 sm:w-28 sm:h-36 rounded-xl overflow-hidden border-2 border-crimson shrink-0 shadow-cinematic">
+                    <Image
+                      src={data.hero.portraitUrl || '/zefanya-portrait.jpg'}
+                      alt={data.profile.fullName}
+                      fill
+                      sizes="120px"
+                      className="object-cover object-top"
+                    />
+                  </div>
+                  <div className="space-y-1.5 text-center sm:text-left">
+                    <span className="text-xs font-mono text-crimson font-bold uppercase">
+                      Portofolio Resmi
+                    </span>
+                    <h4 className="text-xl font-extrabold text-white">{data.profile.fullName}</h4>
+                    <p className="text-xs text-platinum font-medium">{data.profile.professionalTitle.id}</p>
+                    <p className="text-xs text-platinum-muted font-mono">{data.profile.location.id}</p>
+                    <div className="pt-2 flex flex-wrap gap-2 justify-center sm:justify-start">
+                      <span className="px-2.5 py-1 rounded-md bg-obsidian border border-platinum/15 text-[11px] font-mono text-emerald-400">
+                        ● Live on Localhost:3000
+                      </span>
+                      <span className="px-2.5 py-1 rounded-md bg-obsidian border border-platinum/15 text-[11px] font-mono text-platinum">
+                        Video: {data.hero.videoUrl.split('/').pop()}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="p-5 rounded-xl bg-graphite-surface border border-platinum/10">
                     <span className="text-xs font-mono text-platinum-muted uppercase block">Status Portofolio</span>
@@ -403,35 +468,35 @@ export default function AdminPage() {
 
                 {/* Quick File Update Actions */}
                 <div className="p-6 rounded-2xl bg-graphite-surface border border-platinum/15 space-y-4">
-                  <h4 className="text-base font-bold text-white">Pembaruan Media Cepat</h4>
+                  <h4 className="text-base font-bold text-white">Pembaruan Media & Foto</h4>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {/* CV Uploader */}
-                    <div className="p-4 rounded-xl bg-obsidian border border-platinum/10 space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-mono text-platinum font-semibold">Ganti File CV (PDF)</span>
-                        <FileText className="w-4 h-4 text-crimson" />
-                      </div>
-                      <p className="text-[11px] text-platinum-muted">File saat ini: {data.cv.cvFileName}</p>
-                      <input
-                        type="file"
-                        accept="application/pdf"
-                        onChange={(e) => handleFileUpload(e, 'cv')}
-                        className="text-xs text-platinum-muted file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-crimson file:text-white hover:file:bg-crimson-dark cursor-pointer"
-                      />
-                    </div>
-
                     {/* Portrait Photo Uploader */}
                     <div className="p-4 rounded-xl bg-obsidian border border-platinum/10 space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-mono text-platinum font-semibold">Ganti Foto Portrait</span>
                         <Upload className="w-4 h-4 text-crimson" />
                       </div>
-                      <p className="text-[11px] text-platinum-muted">File saat ini: {data.hero.portraitUrl}</p>
+                      <p className="text-[11px] text-platinum-muted truncate">File: {data.hero.portraitUrl}</p>
                       <input
                         type="file"
                         accept="image/jpeg,image/png,image/webp"
                         onChange={(e) => handleFileUpload(e, 'portrait')}
+                        className="text-xs text-platinum-muted file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-crimson file:text-white hover:file:bg-crimson-dark cursor-pointer"
+                      />
+                    </div>
+
+                    {/* CV Uploader */}
+                    <div className="p-4 rounded-xl bg-obsidian border border-platinum/10 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-mono text-platinum font-semibold">Ganti File CV (PDF)</span>
+                        <FileText className="w-4 h-4 text-crimson" />
+                      </div>
+                      <p className="text-[11px] text-platinum-muted truncate">File: {data.cv.cvFileName}</p>
+                      <input
+                        type="file"
+                        accept="application/pdf"
+                        onChange={(e) => handleFileUpload(e, 'cv')}
                         className="text-xs text-platinum-muted file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-crimson file:text-white hover:file:bg-crimson-dark cursor-pointer"
                       />
                     </div>
@@ -444,13 +509,93 @@ export default function AdminPage() {
             {activeTab === 'hero' && (
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-xl font-bold text-white">Hero Section & Video Cover</h3>
+                  <h3 className="text-xl font-bold text-white">Hero Section & Video Background</h3>
                   <p className="text-xs text-platinum-muted mt-1">
-                    Konfigurasi teks bilingual, video cover sinematik, poster fallback, dan posisi portrait.
+                    Pilih video background berkualitas tinggi gratis atau unggah video kustom Anda.
                   </p>
                 </div>
 
+                {/* Video Presets Selector */}
                 <div className="p-6 rounded-2xl bg-graphite-surface border border-platinum/15 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-crimson" />
+                    <h4 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+                      Preset Footage Sinematik Gratis (1-Click Switch)
+                    </h4>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {videoPresets.map((preset) => {
+                      const isSelected = data.hero.videoUrl === preset.url;
+                      return (
+                        <div
+                          key={preset.id}
+                          onClick={() => setData({ ...data, hero: { ...data.hero, videoUrl: preset.url } })}
+                          className={`p-4 rounded-xl border cursor-pointer transition-all ${
+                            isSelected
+                              ? 'bg-crimson/15 border-crimson shadow-glow-crimson'
+                              : 'bg-obsidian border-platinum/10 hover:border-platinum/30'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-graphite border border-platinum/15 text-platinum-muted">
+                              {preset.badge}
+                            </span>
+                            {isSelected && <Check className="w-4 h-4 text-crimson" />}
+                          </div>
+                          <p className="text-xs font-semibold text-white mt-2">{preset.label}</p>
+                          <p className="text-[10px] font-mono text-platinum-muted/60 mt-1 truncate">{preset.url}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="pt-3 border-t border-platinum/10">
+                    <label className="block text-xs font-mono text-platinum-muted mb-1">
+                      Atau Masukkan URL Video Custom (MP4 / WebM):
+                    </label>
+                    <input
+                      type="text"
+                      value={data.hero.videoUrl}
+                      onChange={(e) => setData({ ...data, hero: { ...data.hero, videoUrl: e.target.value } })}
+                      className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-xs font-mono text-warmWhite"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-mono text-platinum-muted mb-1">
+                      URL Poster Fallback Image (Saat Video Loading):
+                    </label>
+                    <input
+                      type="text"
+                      value={data.hero.fallbackPosterUrl}
+                      onChange={(e) => setData({ ...data, hero: { ...data.hero, fallbackPosterUrl: e.target.value } })}
+                      className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-xs font-mono text-warmWhite"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-mono text-platinum-muted mb-1">
+                      Dark Overlay Opacity: {data.hero.overlayOpacity}
+                    </label>
+                    <input
+                      type="range"
+                      min="0.3"
+                      max="0.95"
+                      step="0.02"
+                      value={data.hero.overlayOpacity}
+                      onChange={(e) => setData({ ...data, hero: { ...data.hero, overlayOpacity: parseFloat(e.target.value) } })}
+                      className="w-full accent-crimson cursor-pointer"
+                    />
+                  </div>
+                </div>
+
+                {/* Hero Headlines */}
+                <div className="p-6 rounded-2xl bg-graphite-surface border border-platinum/15 space-y-4">
+                  <h4 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+                    Copywriting & Headline
+                  </h4>
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-mono text-platinum-muted mb-1">Eyebrow (Indonesia)</label>
@@ -549,45 +694,6 @@ export default function AdminPage() {
                       className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-sm"
                     />
                   </div>
-
-                  {/* Video & Poster Config */}
-                  <div className="pt-4 border-t border-platinum/10 space-y-4">
-                    <h5 className="text-sm font-bold text-white">Video Background & Poster</h5>
-                    <div>
-                      <label className="block text-xs font-mono text-platinum-muted mb-1">URL Video Background (MP4)</label>
-                      <input
-                        type="text"
-                        value={data.hero.videoUrl}
-                        onChange={(e) => setData({ ...data, hero: { ...data.hero, videoUrl: e.target.value } })}
-                        className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-xs font-mono"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-mono text-platinum-muted mb-1">URL Poster Fallback Image</label>
-                      <input
-                        type="text"
-                        value={data.hero.fallbackPosterUrl}
-                        onChange={(e) => setData({ ...data, hero: { ...data.hero, fallbackPosterUrl: e.target.value } })}
-                        className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-xs font-mono"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-mono text-platinum-muted mb-1">
-                        Dark Overlay Opacity: {data.hero.overlayOpacity}
-                      </label>
-                      <input
-                        type="range"
-                        min="0.3"
-                        max="0.95"
-                        step="0.02"
-                        value={data.hero.overlayOpacity}
-                        onChange={(e) => setData({ ...data, hero: { ...data.hero, overlayOpacity: parseFloat(e.target.value) } })}
-                        className="w-full"
-                      />
-                    </div>
-                  </div>
                 </div>
               </div>
             )}
@@ -596,9 +702,9 @@ export default function AdminPage() {
             {activeTab === 'profile' && (
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-xl font-bold text-white">Profil Profesional & Kontak</h3>
+                  <h3 className="text-xl font-bold text-white">Profil Eksekutif & Identitas</h3>
                   <p className="text-xs text-platinum-muted mt-1">
-                    Kelola nama lengkap, gelar jabatan, lokasi, email, nomor WhatsApp, dan biografi.
+                    Kelola nama lengkap, gelar jabatan, lokasi, email, nomor WhatsApp, dan biografi naratif.
                   </p>
                 </div>
 
@@ -666,6 +772,24 @@ export default function AdminPage() {
                   </div>
 
                   <div>
+                    <label className="block text-xs font-mono text-platinum-muted mb-1">Ringkasan Singkat (Short Bio)</label>
+                    <textarea
+                      rows={3}
+                      value={data.profile.shortBio.id}
+                      onChange={(e) =>
+                        setData({
+                          ...data,
+                          profile: {
+                            ...data.profile,
+                            shortBio: { ...data.profile.shortBio, id: e.target.value },
+                          },
+                        })
+                      }
+                      className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-sm"
+                    />
+                  </div>
+
+                  <div>
                     <label className="block text-xs font-mono text-platinum-muted mb-1">Biografi Lengkap (Indonesia)</label>
                     <textarea
                       rows={6}
@@ -676,24 +800,6 @@ export default function AdminPage() {
                           profile: {
                             ...data.profile,
                             fullBio: { ...data.profile.fullBio, id: e.target.value },
-                          },
-                        })
-                      }
-                      className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-sm"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-mono text-platinum-muted mb-1">Biografi Lengkap (English)</label>
-                    <textarea
-                      rows={6}
-                      value={data.profile.fullBio.en}
-                      onChange={(e) =>
-                        setData({
-                          ...data,
-                          profile: {
-                            ...data.profile,
-                            fullBio: { ...data.profile.fullBio, en: e.target.value },
                           },
                         })
                       }
@@ -729,7 +835,7 @@ export default function AdminPage() {
                       };
                       setData({ ...data, experiences: [...data.experiences, newExp] });
                     }}
-                    className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-crimson rounded-lg"
+                    className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-crimson rounded-lg shadow-glow-crimson"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Tambah Posisi</span>
@@ -821,7 +927,761 @@ export default function AdminPage() {
               </div>
             )}
 
-            {/* 5. INQUIRIES TAB */}
+            {/* 5. COMPETENCIES TAB */}
+            {activeTab === 'competencies' && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Kompetensi Inti ({data.competencies.length})</h3>
+                    <p className="text-xs text-platinum-muted mt-1">
+                      Kelola daftar 15 kompetensi utama, kategori (operations, procurement, logistics, leadership, strategy).
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      const newComp = {
+                        id: `comp-${Date.now()}`,
+                        title: { id: 'Kompetensi Baru', en: 'New Competency' },
+                        category: 'operations' as const,
+                        description: { id: 'Deskripsi kompetensi...', en: 'Description...' },
+                        order: data.competencies.length + 1,
+                      };
+                      setData({ ...data, competencies: [...data.competencies, newComp] });
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-crimson rounded-lg shadow-glow-crimson"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Tambah Kompetensi</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {data.competencies.map((comp, idx) => (
+                    <div key={comp.id} className="p-4 rounded-xl bg-graphite-surface border border-platinum/10 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-mono text-crimson font-bold uppercase">
+                          #{idx + 1} • {comp.category}
+                        </span>
+                        <button
+                          onClick={() => {
+                            if (confirm('Hapus kompetensi ini?')) {
+                              setData({
+                                ...data,
+                                competencies: data.competencies.filter((c) => c.id !== comp.id),
+                              });
+                            }
+                          }}
+                          className="text-platinum-muted hover:text-red-400 p-1"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] font-mono text-platinum-muted block">Judul Kompetensi (ID)</label>
+                        <input
+                          type="text"
+                          value={comp.title.id}
+                          onChange={(e) => {
+                            const updated = [...data.competencies];
+                            updated[idx].title.id = e.target.value;
+                            setData({ ...data, competencies: updated });
+                          }}
+                          className="w-full px-2.5 py-1.5 rounded-lg bg-obsidian border border-platinum/15 text-xs text-white"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="text-[10px] font-mono text-platinum-muted block">Kategori</label>
+                          <select
+                            value={comp.category}
+                            onChange={(e: any) => {
+                              const updated = [...data.competencies];
+                              updated[idx].category = e.target.value;
+                              setData({ ...data, competencies: updated });
+                            }}
+                            className="w-full px-2 py-1.5 rounded-lg bg-obsidian border border-platinum/15 text-xs text-platinum font-mono"
+                          >
+                            <option value="operations">operations</option>
+                            <option value="procurement">procurement</option>
+                            <option value="logistics">logistics</option>
+                            <option value="leadership">leadership</option>
+                            <option value="strategy">strategy</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="text-[10px] font-mono text-platinum-muted block">Title (EN)</label>
+                          <input
+                            type="text"
+                            value={comp.title.en}
+                            onChange={(e) => {
+                              const updated = [...data.competencies];
+                              updated[idx].title.en = e.target.value;
+                              setData({ ...data, competencies: updated });
+                            }}
+                            className="w-full px-2.5 py-1.5 rounded-lg bg-obsidian border border-platinum/15 text-xs text-white"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] font-mono text-platinum-muted block">Deskripsi Ringkas</label>
+                        <textarea
+                          rows={2}
+                          value={comp.description?.id || ''}
+                          onChange={(e) => {
+                            const updated = [...data.competencies];
+                            updated[idx].description = {
+                              id: e.target.value,
+                              en: updated[idx].description?.en || e.target.value,
+                            };
+                            setData({ ...data, competencies: updated });
+                          }}
+                          className="w-full px-2.5 py-1.5 rounded-lg bg-obsidian border border-platinum/15 text-xs text-platinum-muted"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 6. LEADERSHIP TAB */}
+            {activeTab === 'leadership' && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Kepemimpinan Organisasi ({data.leadership.length})</h3>
+                    <p className="text-xs text-platinum-muted mt-1">
+                      Kelola organisasi kemahasiswaan & kepemudaan (GEMA-RI, BEM UBJ).
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      const newLead = {
+                        id: `lead-${Date.now()}`,
+                        organization: 'Nama Organisasi',
+                        role: { id: 'Jabatan Kepemimpinan', en: 'Leadership Role' },
+                        period: '2023 - 2024',
+                        location: 'Bekasi',
+                        highlights: { id: ['Pencapaian utama...'], en: ['Key achievement...'] },
+                        featured: true,
+                        order: data.leadership.length + 1,
+                      };
+                      setData({ ...data, leadership: [...data.leadership, newLead] });
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-crimson rounded-lg shadow-glow-crimson"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Tambah Kepemimpinan</span>
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  {data.leadership.map((lead, idx) => (
+                    <div key={lead.id} className="p-5 rounded-xl bg-graphite-surface border border-platinum/10 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-mono font-bold text-crimson">
+                          #{idx + 1} • {lead.organization}
+                        </span>
+                        <button
+                          onClick={() => {
+                            if (confirm('Hapus entry kepemimpinan ini?')) {
+                              setData({
+                                ...data,
+                                leadership: data.leadership.filter((l) => l.id !== lead.id),
+                              });
+                            }
+                          }}
+                          className="text-platinum-muted hover:text-red-400 p-1"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-[11px] font-mono text-platinum-muted block">Nama Organisasi</label>
+                          <input
+                            type="text"
+                            value={lead.organization}
+                            onChange={(e) => {
+                              const updated = [...data.leadership];
+                              updated[idx].organization = e.target.value;
+                              setData({ ...data, leadership: updated });
+                            }}
+                            className="w-full px-3 py-1.5 rounded-lg bg-obsidian border border-platinum/15 text-sm"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-mono text-platinum-muted block">Jabatan (Indonesia)</label>
+                          <input
+                            type="text"
+                            value={lead.role.id}
+                            onChange={(e) => {
+                              const updated = [...data.leadership];
+                              updated[idx].role.id = e.target.value;
+                              setData({ ...data, leadership: updated });
+                            }}
+                            className="w-full px-3 py-1.5 rounded-lg bg-obsidian border border-platinum/15 text-sm"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-[11px] font-mono text-platinum-muted block">Periode</label>
+                          <input
+                            type="text"
+                            value={lead.period}
+                            onChange={(e) => {
+                              const updated = [...data.leadership];
+                              updated[idx].period = e.target.value;
+                              setData({ ...data, leadership: updated });
+                            }}
+                            className="w-full px-3 py-1.5 rounded-lg bg-obsidian border border-platinum/15 text-sm"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-mono text-platinum-muted block">Lokasi</label>
+                          <input
+                            type="text"
+                            value={lead.location}
+                            onChange={(e) => {
+                              const updated = [...data.leadership];
+                              updated[idx].location = e.target.value;
+                              setData({ ...data, leadership: updated });
+                            }}
+                            className="w-full px-3 py-1.5 rounded-lg bg-obsidian border border-platinum/15 text-sm"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 7. EDUCATION & CREDENTIALS TAB */}
+            {activeTab === 'education' && (
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-xl font-bold text-white">Pendidikan Tinggi & Sertifikasi Profesi</h3>
+                  <p className="text-xs text-platinum-muted mt-1">
+                    Kelola gelar akademik universitas, IPK, dan 4 lisensi/sertifikasi terverifikasi.
+                  </p>
+                </div>
+
+                {/* Higher Education */}
+                <div className="p-6 rounded-2xl bg-graphite-surface border border-platinum/15 space-y-4">
+                  <h4 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+                    Pendidikan Formal
+                  </h4>
+                  {data.education.map((edu, idx) => (
+                    <div key={edu.id} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-[11px] font-mono text-platinum-muted block">Gelar Pendidikan</label>
+                        <input
+                          type="text"
+                          value={edu.degree.id}
+                          onChange={(e) => {
+                            const updated = [...data.education];
+                            updated[idx].degree.id = e.target.value;
+                            setData({ ...data, education: updated });
+                          }}
+                          className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-sm font-bold"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[11px] font-mono text-platinum-muted block">Institusi / Universitas</label>
+                        <input
+                          type="text"
+                          value={edu.institution}
+                          onChange={(e) => {
+                            const updated = [...data.education];
+                            updated[idx].institution = e.target.value;
+                            setData({ ...data, education: updated });
+                          }}
+                          className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[11px] font-mono text-platinum-muted block">IPK (GPA)</label>
+                        <input
+                          type="text"
+                          value={edu.gpa}
+                          onChange={(e) => {
+                            const updated = [...data.education];
+                            updated[idx].gpa = e.target.value;
+                            setData({ ...data, education: updated });
+                          }}
+                          className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-sm font-mono"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[11px] font-mono text-platinum-muted block">Predikat Kelulusan</label>
+                        <input
+                          type="text"
+                          value={edu.distinction.id}
+                          onChange={(e) => {
+                            const updated = [...data.education];
+                            updated[idx].distinction.id = e.target.value;
+                            setData({ ...data, education: updated });
+                          }}
+                          className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-sm text-emerald-400"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Certifications List */}
+                <div className="p-6 rounded-2xl bg-graphite-surface border border-platinum/15 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+                      Sertifikasi Profesi ({data.certifications.length})
+                    </h4>
+                    <button
+                      onClick={() => {
+                        const newCert = {
+                          id: `cert-${Date.now()}`,
+                          name: { id: 'Nama Sertifikasi Baru', en: 'New Certification' },
+                          issuer: 'Penerbit Sertifikat',
+                          year: '2024',
+                          order: data.certifications.length + 1,
+                        };
+                        setData({ ...data, certifications: [...data.certifications, newCert] });
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-crimson rounded-lg shadow-glow-crimson"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Tambah Sertifikat</span>
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {data.certifications.map((cert, idx) => (
+                      <div key={cert.id} className="p-3.5 rounded-xl bg-obsidian border border-platinum/10 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-mono text-crimson font-bold">#{idx + 1}</span>
+                          <button
+                            onClick={() => {
+                              if (confirm('Hapus sertifikasi ini?')) {
+                                setData({
+                                  ...data,
+                                  certifications: data.certifications.filter((c) => c.id !== cert.id),
+                                });
+                              }
+                            }}
+                            className="text-platinum-muted hover:text-red-400 p-1"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] font-mono text-platinum-muted block">Nama Sertifikat (ID)</label>
+                          <input
+                            type="text"
+                            value={cert.name.id}
+                            onChange={(e) => {
+                              const updated = [...data.certifications];
+                              updated[idx].name.id = e.target.value;
+                              setData({ ...data, certifications: updated });
+                            }}
+                            className="w-full px-2.5 py-1.5 rounded-lg bg-graphite border border-platinum/15 text-xs text-white"
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-2">
+                          <div className="col-span-2">
+                            <label className="text-[10px] font-mono text-platinum-muted block">Lembaga Penerbit</label>
+                            <input
+                              type="text"
+                              value={cert.issuer}
+                              onChange={(e) => {
+                                const updated = [...data.certifications];
+                                updated[idx].issuer = e.target.value;
+                                setData({ ...data, certifications: updated });
+                              }}
+                              className="w-full px-2.5 py-1.5 rounded-lg bg-graphite border border-platinum/15 text-xs text-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] font-mono text-platinum-muted block">Tahun</label>
+                            <input
+                              type="text"
+                              value={cert.year}
+                              onChange={(e) => {
+                                const updated = [...data.certifications];
+                                updated[idx].year = e.target.value;
+                                setData({ ...data, certifications: updated });
+                              }}
+                              className="w-full px-2.5 py-1.5 rounded-lg bg-graphite border border-platinum/15 text-xs text-white font-mono"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 8. ACHIEVEMENTS TAB */}
+            {activeTab === 'achievements' && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Pencapaian Terpilih ({data.achievements.length})</h3>
+                    <p className="text-xs text-platinum-muted mt-1">
+                      Kelola dampak program vaksinasi (1.100 dosis) dan prestasi kompetitif basket.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      const newAch = {
+                        id: `ach-${Date.now()}`,
+                        title: { id: 'Judul Pencapaian Baru', en: 'New Achievement' },
+                        year: '2024',
+                        metric: '100%',
+                        metricLabel: { id: 'Tercapai', en: 'Achieved' },
+                        description: { id: 'Deskripsi pencapaian...', en: 'Description...' },
+                        order: data.achievements.length + 1,
+                      };
+                      setData({ ...data, achievements: [...data.achievements, newAch] });
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-crimson rounded-lg shadow-glow-crimson"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Tambah Pencapaian</span>
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  {data.achievements.map((ach, idx) => (
+                    <div key={ach.id} className="p-5 rounded-xl bg-graphite-surface border border-platinum/10 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-mono font-bold text-crimson">#{idx + 1} • Tahun {ach.year}</span>
+                        <button
+                          onClick={() => {
+                            if (confirm('Hapus pencapaian ini?')) {
+                              setData({
+                                ...data,
+                                achievements: data.achievements.filter((a) => a.id !== ach.id),
+                              });
+                            }
+                          }}
+                          className="text-platinum-muted hover:text-red-400 p-1"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div className="sm:col-span-2">
+                          <label className="text-[11px] font-mono text-platinum-muted block">Judul Pencapaian (ID)</label>
+                          <input
+                            type="text"
+                            value={ach.title.id}
+                            onChange={(e) => {
+                              const updated = [...data.achievements];
+                              updated[idx].title.id = e.target.value;
+                              setData({ ...data, achievements: updated });
+                            }}
+                            className="w-full px-3 py-1.5 rounded-lg bg-obsidian border border-platinum/15 text-sm font-semibold"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[11px] font-mono text-platinum-muted block">Tahun</label>
+                          <input
+                            type="text"
+                            value={ach.year}
+                            onChange={(e) => {
+                              const updated = [...data.achievements];
+                              updated[idx].year = e.target.value;
+                              setData({ ...data, achievements: updated });
+                            }}
+                            className="w-full px-3 py-1.5 rounded-lg bg-obsidian border border-platinum/15 text-sm font-mono"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-[11px] font-mono text-platinum-muted block">Angka / Metrik (e.g. 1,100+)</label>
+                          <input
+                            type="text"
+                            value={ach.metric || ''}
+                            onChange={(e) => {
+                              const updated = [...data.achievements];
+                              updated[idx].metric = e.target.value;
+                              setData({ ...data, achievements: updated });
+                            }}
+                            className="w-full px-3 py-1.5 rounded-lg bg-obsidian border border-platinum/15 text-sm text-crimson font-mono font-bold"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[11px] font-mono text-platinum-muted block">Label Metrik (ID)</label>
+                          <input
+                            type="text"
+                            value={ach.metricLabel?.id || ''}
+                            onChange={(e) => {
+                              const updated = [...data.achievements];
+                              updated[idx].metricLabel = {
+                                id: e.target.value,
+                                en: updated[idx].metricLabel?.en || e.target.value,
+                              };
+                              setData({ ...data, achievements: updated });
+                            }}
+                            className="w-full px-3 py-1.5 rounded-lg bg-obsidian border border-platinum/15 text-sm"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-[11px] font-mono text-platinum-muted block">Deskripsi Lengkap (ID)</label>
+                        <textarea
+                          rows={2}
+                          value={ach.description.id}
+                          onChange={(e) => {
+                            const updated = [...data.achievements];
+                            updated[idx].description.id = e.target.value;
+                            setData({ ...data, achievements: updated });
+                          }}
+                          className="w-full px-3 py-1.5 rounded-lg bg-obsidian border border-platinum/15 text-xs text-platinum"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 9. TOOLS & LANGUAGES TAB */}
+            {activeTab === 'tools' && (
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-xl font-bold text-white">Perangkat Kerja & Kompetensi Bahasa</h3>
+                  <p className="text-xs text-platinum-muted mt-1">
+                    Kelola ekosistem tools operasional (Word, Excel, Photoshop, CapCut) dan kemahiran bahasa.
+                  </p>
+                </div>
+
+                {/* Tools CRUD */}
+                <div className="p-6 rounded-2xl bg-graphite-surface border border-platinum/15 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+                      Daftar Software & Tools ({data.tools.length})
+                    </h4>
+                    <button
+                      onClick={() => {
+                        const newTool = {
+                          id: `tool-${Date.now()}`,
+                          name: 'Perangkat Baru',
+                          category: 'office' as const,
+                          order: data.tools.length + 1,
+                        };
+                        setData({ ...data, tools: [...data.tools, newTool] });
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-crimson rounded-lg shadow-glow-crimson"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Tambah Tool</span>
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {data.tools.map((tool, idx) => (
+                      <div key={tool.id} className="p-3 rounded-xl bg-obsidian border border-platinum/10 flex items-center justify-between gap-2">
+                        <div className="flex-1">
+                          <input
+                            type="text"
+                            value={tool.name}
+                            onChange={(e) => {
+                              const updated = [...data.tools];
+                              updated[idx].name = e.target.value;
+                              setData({ ...data, tools: updated });
+                            }}
+                            className="w-full px-2 py-1 rounded bg-graphite border border-platinum/15 text-xs font-semibold text-white"
+                          />
+                        </div>
+                        <select
+                          value={tool.category}
+                          onChange={(e: any) => {
+                            const updated = [...data.tools];
+                            updated[idx].category = e.target.value;
+                            setData({ ...data, tools: updated });
+                          }}
+                          className="px-2 py-1 rounded bg-graphite border border-platinum/15 text-[10px] font-mono text-platinum"
+                        >
+                          <option value="office">office</option>
+                          <option value="reporting">reporting</option>
+                          <option value="creative">creative</option>
+                          <option value="mobile">mobile</option>
+                        </select>
+                        <button
+                          onClick={() => {
+                            setData({ ...data, tools: data.tools.filter((t) => t.id !== tool.id) });
+                          }}
+                          className="text-platinum-muted hover:text-red-400 p-1"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Languages CRUD */}
+                <div className="p-6 rounded-2xl bg-graphite-surface border border-platinum/15 space-y-4">
+                  <h4 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+                    Kompetensi Bahasa ({data.languages.length})
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {data.languages.map((lang, idx) => (
+                      <div key={lang.id} className="p-4 rounded-xl bg-obsidian border border-platinum/10 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold text-white">{lang.name.id}</span>
+                          <span className="text-xs font-mono text-crimson">{lang.badge}</span>
+                        </div>
+                        <div>
+                          <label className="text-[10px] font-mono text-platinum-muted block">Nama Bahasa (ID)</label>
+                          <input
+                            type="text"
+                            value={lang.name.id}
+                            onChange={(e) => {
+                              const updated = [...data.languages];
+                              updated[idx].name.id = e.target.value;
+                              setData({ ...data, languages: updated });
+                            }}
+                            className="w-full px-2.5 py-1 rounded bg-graphite border border-platinum/15 text-xs text-white"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] font-mono text-platinum-muted block">Tingkat Kemahiran (ID)</label>
+                          <input
+                            type="text"
+                            value={lang.level.id}
+                            onChange={(e) => {
+                              const updated = [...data.languages];
+                              updated[idx].level.id = e.target.value;
+                              setData({ ...data, languages: updated });
+                            }}
+                            className="w-full px-2.5 py-1 rounded bg-graphite border border-platinum/15 text-xs text-platinum-muted"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 10. CONTACT TAB */}
+            {activeTab === 'contact' && (
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-xl font-bold text-white">Kontak & Form Kolaborasi</h3>
+                  <p className="text-xs text-platinum-muted mt-1">
+                    Konfigurasi pesan penutup, email resmi, nomor WhatsApp, LinkedIn, dan status ketersediaan.
+                  </p>
+                </div>
+
+                <div className="p-6 rounded-2xl bg-graphite-surface border border-platinum/15 space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-mono text-platinum-muted mb-1">Headline Penutup (ID)</label>
+                      <input
+                        type="text"
+                        value={data.contact.headline.id}
+                        onChange={(e) =>
+                          setData({ ...data, contact: { ...data.contact, headline: { ...data.contact.headline, id: e.target.value } } })
+                        }
+                        className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-sm font-bold"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-mono text-platinum-muted mb-1">Headline Penutup (EN)</label>
+                      <input
+                        type="text"
+                        value={data.contact.headline.en}
+                        onChange={(e) =>
+                          setData({ ...data, contact: { ...data.contact, headline: { ...data.contact.headline, en: e.target.value } } })
+                        }
+                        className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-sm font-bold"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-mono text-platinum-muted mb-1">Subheadline Penutup (ID)</label>
+                    <textarea
+                      rows={2}
+                      value={data.contact.subheadline.id}
+                      onChange={(e) =>
+                        setData({ ...data, contact: { ...data.contact, subheadline: { ...data.contact.subheadline, id: e.target.value } } })
+                      }
+                      className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-sm"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-mono text-platinum-muted mb-1">Email Resmi</label>
+                      <input
+                        type="email"
+                        value={data.contact.email}
+                        onChange={(e) => setData({ ...data, contact: { ...data.contact, email: e.target.value } })}
+                        className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-sm font-mono"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-mono text-platinum-muted mb-1">Nomor WhatsApp Direct</label>
+                      <input
+                        type="text"
+                        value={data.contact.whatsapp}
+                        onChange={(e) => setData({ ...data, contact: { ...data.contact, whatsapp: e.target.value } })}
+                        className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-sm font-mono"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-mono text-platinum-muted mb-1">URL Profil LinkedIn</label>
+                    <input
+                      type="text"
+                      value={data.contact.linkedinUrl}
+                      onChange={(e) => setData({ ...data, contact: { ...data.contact, linkedinUrl: e.target.value } })}
+                      className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-sm font-mono text-sky-400"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-mono text-platinum-muted mb-1">Status Ketersediaan Eksekutif</label>
+                    <input
+                      type="text"
+                      value={data.contact.availabilityStatus.id}
+                      onChange={(e) =>
+                        setData({
+                          ...data,
+                          contact: {
+                            ...data.contact,
+                            availabilityStatus: { id: e.target.value, en: e.target.value },
+                          },
+                        })
+                      }
+                      className="w-full px-3 py-2 rounded-lg bg-obsidian border border-platinum/15 text-sm text-emerald-400 font-semibold"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 11. INQUIRIES TAB */}
             {activeTab === 'inquiries' && (
               <div className="space-y-6">
                 <div>
@@ -852,6 +1712,15 @@ export default function AdminPage() {
                         <p className="text-xs text-platinum-muted bg-obsidian p-3 rounded-lg border border-platinum/10">
                           {inq.message}
                         </p>
+                        <div className="pt-2 flex justify-end">
+                          <a
+                            href={`mailto:${inq.email}?subject=Re: ${encodeURIComponent(inq.subject || 'Executive Discussion')}`}
+                            className="inline-flex items-center gap-1.5 px-3 py-1 text-[11px] font-mono text-white bg-crimson rounded-lg hover:bg-crimson-dark"
+                          >
+                            <Mail className="w-3 h-3" />
+                            <span>Balas Email</span>
+                          </a>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -859,7 +1728,7 @@ export default function AdminPage() {
               </div>
             )}
 
-            {/* 6. THEME & SEO TAB */}
+            {/* 12. THEME & SEO TAB */}
             {activeTab === 'theme_seo' && (
               <div className="space-y-6">
                 <div>

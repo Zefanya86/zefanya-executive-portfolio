@@ -30,9 +30,9 @@ export const initialPortfolioData: PortfolioData = {
       id: "Hubungi Sekarang",
       en: "Let's Connect"
     },
-    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-modern-city-skyscrapers-at-night-4240-large.mp4",
-    fallbackPosterUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop",
-    overlayOpacity: 0.72,
+    videoUrl: "/videos/hero-cinematic.mp4",
+    fallbackPosterUrl: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=2000&auto=format&fit=crop",
+    overlayOpacity: 0.70,
     portraitUrl: "/zefanya-portrait.jpg",
     portraitAlt: "Zefanya Zulian - Operations, Procurement & Business Management Professional",
     portraitPosition: "right"
@@ -606,5 +606,5 @@ export const initialPortfolioData: PortfolioData = {
   },
   isPublished: true,
   publishedAt: "2026-10-21T00:00:00Z",
-  updatedAt: "2026-10-21T02:30:00Z"
+  updatedAt: "2026-10-21T04:26:00Z"
 };

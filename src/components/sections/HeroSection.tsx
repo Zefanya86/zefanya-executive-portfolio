@@ -26,14 +26,13 @@ export default function HeroSection() {
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.play().catch(() => {
-        // Autoplay policy prevented playback, silent fallback
         setIsPlaying(false);
       });
     }
-  }, []);
+  }, [data.hero.videoUrl]);
 
-  const videoSrc = data.hero.videoUrl || 'https://assets.mixkit.co/videos/preview/mixkit-modern-city-skyscrapers-at-night-4240-large.mp4';
-  const posterSrc = data.hero.fallbackPosterUrl || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop';
+  const videoSrc = data.hero.videoUrl || '/videos/hero-cinematic.mp4';
+  const posterSrc = data.hero.fallbackPosterUrl || 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=2000&auto=format&fit=crop';
 
   return (
     <section
@@ -45,15 +44,17 @@ export default function HeroSection() {
         {!videoError && (
           <video
             ref={videoRef}
+            key={videoSrc}
             autoPlay
             muted
             loop
             playsInline
             poster={posterSrc}
             onError={() => setVideoError(true)}
-            className="w-full h-full object-cover object-center filter brightness-45 contrast-115 transform scale-105"
+            className="w-full h-full object-cover object-center filter brightness-50 contrast-125 transform scale-105 transition-opacity duration-1000"
           >
             <source src={videoSrc} type="video/mp4" />
+            <source src={videoSrc} type="video/webm" />
           </video>
         )}
 
@@ -61,21 +62,21 @@ export default function HeroSection() {
         {videoError && (
           <div
             style={{ backgroundImage: `url(${posterSrc})` }}
-            className="w-full h-full bg-cover bg-center filter brightness-30 contrast-120"
+            className="w-full h-full bg-cover bg-center filter brightness-40 contrast-120"
           />
         )}
 
         {/* Multi-layered Cinematic Dark Overlays */}
         <div
-          style={{ opacity: data.hero.overlayOpacity ?? 0.72 }}
+          style={{ opacity: data.hero.overlayOpacity ?? 0.70 }}
           className="absolute inset-0 bg-obsidian"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/60 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-obsidian via-obsidian/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-obsidian via-obsidian/75 to-transparent" />
         <div className="absolute inset-0 cinematic-vignette" />
 
         {/* Dynamic Subtle Lighting Accents */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-crimson/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-crimson/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-1/3 right-1/4 w-[450px] h-[450px] bg-platinum/5 rounded-full blur-3xl pointer-events-none" />
       </div>
 
