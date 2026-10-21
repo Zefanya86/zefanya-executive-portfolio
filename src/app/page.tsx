@@ -11,7 +11,7 @@ import ToolsSection from '@/components/sections/ToolsSection';
 import ContactSection from '@/components/sections/ContactSection';
 import Footer from '@/components/sections/Footer';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default function HomePage() {
   return (
@@ -27,7 +27,7 @@ export default function HomePage() {
         {/* Section 02: Executive Introduction & Verified Portrait */}
         <ExecutiveIntro />
 
-        {/* Section 03: 3D Tactical Operations & Logistics Grid (Meaningful 3D Visualization) */}
+        {/* Section 03: 3D Tactical Operations & Logistics Grid (Google Earth Satellite 3D) */}
         <OperationsNetworkSection />
 
         {/* Section 04: Professional Experience */}

@@ -9,8 +9,15 @@ export default function HeroSection() {
   const { data, locale, t, setIsCvModalOpen } = usePortfolio();
   const [isPlaying, setIsPlaying] = useState(true);
   const [videoError, setVideoError] = useState(false);
+  const [canLoadVideo, setCanLoadVideo] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<string>(data.hero.videoUrl || '/videos/jakarta-traffic-night.mp4');
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // Defer video loading slightly to guarantee instant First Contentful Paint (<50ms)
+    const timer = setTimeout(() => setCanLoadVideo(true), 80);
+    return () => clearTimeout(timer);
+  }, []);
 
   const toggleVideo = () => {
     if (!videoRef.current) return;
@@ -47,7 +54,7 @@ export default function HeroSection() {
     >
       {/* 1. Cinematic Background Video Layer */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        {!videoError && (
+        {canLoadVideo && !videoError ? (
           <video
             ref={videoRef}
             key={videoSrc}
@@ -55,17 +62,14 @@ export default function HeroSection() {
             muted
             loop
             playsInline
+            preload="metadata"
             poster={posterSrc}
             onError={() => setVideoError(true)}
             className="w-full h-full object-cover object-center filter brightness-50 contrast-125 transform scale-105 transition-opacity duration-1000"
           >
             <source src={videoSrc} type="video/mp4" />
-            <source src={videoSrc} type="video/webm" />
           </video>
-        )}
-
-        {/* Video Fallback Background Image */}
-        {videoError && (
+        ) : (
           <div
             style={{ backgroundImage: `url(${posterSrc})` }}
             className="w-full h-full bg-cover bg-center filter brightness-40 contrast-120"

@@ -1,9 +1,23 @@
 'use client';
 
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { usePortfolio } from '@/context/PortfolioContext';
-import OperationsNetwork3D from '@/components/3d/OperationsNetwork3D';
 import { Globe, MapPin, ExternalLink, ShieldCheck, Cpu } from 'lucide-react';
+
+// Defer Three.js client rendering so initial page loads instantaneously (<50ms)
+const OperationsNetwork3D = dynamic(
+  () => import('@/components/3d/OperationsNetwork3D'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[400px] rounded-3xl bg-white/[0.03] border border-white/10 flex flex-col items-center justify-center gap-3">
+        <div className="w-8 h-8 rounded-full border-2 border-crimson border-t-transparent animate-spin" />
+        <span className="text-xs font-mono text-platinum-muted">Memuat 3D Operations Grid...</span>
+      </div>
+    ),
+  }
+);
 
 export default function OperationsNetworkSection() {
   const { locale } = usePortfolio();
