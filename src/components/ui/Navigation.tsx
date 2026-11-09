@@ -2,197 +2,393 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { usePortfolio } from '@/context/PortfolioContext';
-import { Download, Globe, Menu, X, Shield, ChevronRight } from 'lucide-react';
+import { Locale } from '@/types/portfolio';
+import {
+  Download,
+  Menu,
+  X,
+  Sun,
+  Moon,
+  Volume2,
+  VolumeX,
+  Command,
+  CreditCard,
+  FileDown,
+  Sparkles,
+  Presentation,
+  Compass,
+} from 'lucide-react';
+import { sound } from '@/lib/sound';
 
 export default function Navigation() {
-  const { data, locale, setLocale, setIsCvModalOpen } = usePortfolio();
+  const {
+    data,
+    locale,
+    setLocale,
+    theme,
+    toggleTheme,
+    setIsCvModalOpen,
+    setIsCommandPaletteOpen,
+    setIsPresentationOpen,
+    setIsAvailabilityModalOpen,
+    soundEnabled,
+    toggleSound,
+  } = usePortfolio();
+
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentTime, setCurrentTime] = useState('');
+
+  // Live Jakarta WIB Clock
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const options: Intl.DateTimeFormatOptions = {
+        timeZone: 'Asia/Jakarta',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      };
+      setCurrentTime(new Intl.DateTimeFormat('id-ID', options).format(now));
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      setIsScrolled(window.scrollY > 25);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { href: '#about', label: locale === 'id' ? 'Profil' : 'About' },
-    { href: '#experience', label: locale === 'id' ? 'Pengalaman' : 'Experience' },
-    { href: '#competencies', label: locale === 'id' ? 'Kompetensi' : 'Expertise' },
-    { href: '#leadership', label: locale === 'id' ? 'Kepemimpinan' : 'Leadership' },
-    { href: '#education', label: locale === 'id' ? 'Pendidikan & Lisensi' : 'Credentials' },
-    { href: '#achievements', label: locale === 'id' ? 'Pencapaian' : 'Achievements' },
-    { href: '#contact', label: locale === 'id' ? 'Kontak' : 'Contact' },
+  // Multilingual Navigation Labels
+  const navItems = [
+    {
+      href: '/#about',
+      label: { id: 'TENTANG', en: 'ABOUT', zh: '关于' },
+    },
+    {
+      href: '/experience',
+      label: { id: 'PENGALAMAN', en: 'EXPERIENCE', zh: '职业履历' },
+    },
+    {
+      href: '/projects',
+      label: { id: 'PROYEK', en: 'PROJECTS', zh: '工程案例' },
+    },
+    {
+      href: '/gallery',
+      label: { id: 'GALERI', en: 'GALLERY', zh: '活动画廊' },
+    },
+    {
+      href: '/journal',
+      label: { id: 'ARTIKEL', en: 'JOURNAL', zh: '深度专栏' },
+    },
+    {
+      href: '/card',
+      label: { id: 'KARTU NAMA', en: 'CARD', zh: '数字名片' },
+    },
+    {
+      href: '/contact',
+      label: { id: 'KONTAK', en: 'CONTACT', zh: '商务接洽' },
+    },
   ];
 
-  const toggleLanguage = () => {
-    setLocale(locale === 'id' ? 'en' : 'id');
-  };
-
-  const portraitSrc = data.hero.portraitUrl || '/zefanya-portrait.jpg';
+  const languages: { code: Locale; label: string }[] = [
+    { code: 'id', label: 'ID' },
+    { code: 'en', label: 'EN' },
+    { code: 'zh', label: '中文' },
+  ];
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-          isScrolled
-            ? 'bg-obsidian/90 backdrop-blur-md border-b border-platinum/10 py-3 shadow-lg'
-            : 'bg-gradient-to-b from-obsidian/90 via-obsidian/50 to-transparent py-5'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* Brand Logo with Authentic Photo Avatar */}
+      {/* Floating Ultra Luxury Header Dock */}
+      <header className="fixed top-0 left-0 right-0 z-50 px-3 sm:px-6 pt-3.5 sm:pt-5 pointer-events-none transition-all duration-300">
+        <div
+          className={`max-w-7xl mx-auto flex items-center justify-between pointer-events-auto transition-all duration-300 rounded-full px-4 sm:px-6 py-2.5 sm:py-3 ${
+            isScrolled
+              ? 'bg-obsidian/90 dark:bg-obsidian/95 backdrop-blur-2xl border border-gold/30 shadow-luxury-elevated'
+              : 'bg-obsidian/75 dark:bg-obsidian/85 backdrop-blur-xl border border-white/10 dark:border-gold/20 shadow-lg'
+          }`}
+        >
+          {/* Brand Identity / Monogram */}
           <Link
             href="/"
-            className="flex items-center gap-3 group focus:outline-none focus:ring-1 focus:ring-crimson rounded-lg"
+            onClick={() => sound.playClick()}
+            className="flex items-center gap-3 group focus:outline-none"
           >
-            <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-crimson shadow-glow-crimson group-hover:scale-105 transition shrink-0 bg-graphite">
-              <Image
-                src={portraitSrc}
-                alt="Zefanya Zulian"
-                fill
-                sizes="40px"
-                className="object-cover object-top"
-              />
+            {/* Monogram Badge */}
+            <div className="w-8 h-8 rounded-full border border-gold/60 bg-gold/10 flex items-center justify-center font-serif text-gold text-xs font-bold tracking-wider group-hover:scale-105 group-hover:border-gold group-hover:bg-gold/20 transition-all duration-300">
+              ZZ
             </div>
+
             <div className="flex flex-col">
-              <span className="text-sm sm:text-base font-bold tracking-wider text-warmWhite group-hover:text-platinum-bright transition uppercase">
-                {data.profile.fullName}
+              <span className="text-xs sm:text-sm font-serif font-bold tracking-wider text-ivory group-hover:text-gold transition-colors">
+                ZEFANYA ZULIAN
               </span>
-              <span className="text-[10px] font-mono tracking-widest text-platinum-muted uppercase flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Executive Operations</span>
+              <span className="text-[9px] font-sans tracking-widest uppercase text-softGray hidden sm:inline">
+                The Modern Business Leader
               </span>
             </div>
           </Link>
 
-          {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="px-3 py-1.5 text-xs font-medium text-platinum-muted hover:text-warmWhite hover:bg-graphite/60 rounded-md transition"
-              >
-                {link.label}
-              </a>
-            ))}
+          {/* Desktop Navigation Links */}
+          <nav className="hidden xl:flex items-center gap-1 text-[11px] font-sans tracking-wider uppercase font-medium">
+            {navItems.map((item) => {
+              const labelText = item.label[locale] || item.label.id;
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onMouseEnter={() => sound.playHover()}
+                  onClick={() => sound.playClick()}
+                  className={`px-3 py-1.5 rounded-full transition-all duration-200 ${
+                    isActive
+                      ? 'text-gold bg-gold/15 font-semibold'
+                      : 'text-softGray hover:text-ivory hover:bg-white/5'
+                  }`}
+                >
+                  {labelText}
+                </Link>
+              );
+            })}
           </nav>
 
-          {/* Actions: Language & CV Button */}
-          <div className="hidden sm:flex items-center space-x-3">
-            {/* Language Selector */}
-            <button
-              onClick={toggleLanguage}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-mono text-platinum hover:text-white bg-graphite/60 border border-platinum/15 rounded-lg hover:border-platinum/30 transition"
-              title="Ganti Bahasa / Switch Language"
-              aria-label="Switch Language"
-            >
-              <Globe className="w-3.5 h-3.5 text-crimson" />
-              <span className={locale === 'id' ? 'font-bold text-white' : 'text-platinum-muted'}>ID</span>
-              <span className="text-platinum-muted/50">|</span>
-              <span className={locale === 'en' ? 'font-bold text-white' : 'text-platinum-muted'}>EN</span>
-            </button>
-
-            {/* CV Download Modal Button */}
-            <button
-              onClick={() => setIsCvModalOpen(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-gradient-to-r from-crimson to-crimson-dark rounded-lg hover:brightness-110 shadow-glow-crimson transition active:scale-95 border border-crimson-light/30"
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span>{locale === 'id' ? 'Unduh CV' : 'Download CV'}</span>
-            </button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="flex sm:hidden items-center space-x-2">
-            <button
-              onClick={toggleLanguage}
-              className="p-2 text-xs font-mono text-platinum bg-graphite/80 border border-platinum/15 rounded-lg"
-              aria-label="Switch Language"
-            >
-              <span className="text-crimson font-bold">{locale.toUpperCase()}</span>
-            </button>
-
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-platinum-muted hover:text-white bg-graphite/80 border border-platinum/15 rounded-lg"
-              aria-label="Toggle Menu"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Mobile Menu Drawer */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-30 sm:hidden bg-obsidian/95 backdrop-blur-xl pt-24 px-6 pb-8 flex flex-col justify-between animate-in fade-in duration-200">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-graphite border border-platinum/10">
-              <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-crimson shrink-0">
-                <Image
-                  src={portraitSrc}
-                  alt="Zefanya Zulian"
-                  fill
-                  sizes="48px"
-                  className="object-cover object-top"
-                />
-              </div>
-              <div>
-                <p className="text-sm font-bold text-white uppercase">{data.profile.fullName}</p>
-                <p className="text-xs text-crimson font-mono">General Manager</p>
-              </div>
-            </div>
-
-            <p className="text-[11px] font-mono uppercase tracking-widest text-platinum-muted">
-              {locale === 'id' ? 'Navigasi Portofolio' : 'Portfolio Navigation'}
-            </p>
-            <div className="divide-y divide-platinum/10">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between py-3 text-base font-medium text-platinum hover:text-crimson transition"
-                >
-                  <span>{link.label}</span>
-                  <ChevronRight className="w-4 h-4 text-platinum-muted" />
-                </a>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-4 pt-6 border-t border-platinum/15">
+          {/* Right Controls: Language Selector, Theme, Sound, CV CTA */}
+          <div className="flex items-center gap-1 sm:gap-2">
+            {/* Command Palette Trigger */}
             <button
               onClick={() => {
-                setMobileMenuOpen(false);
-                setIsCvModalOpen(true);
+                sound.playClick();
+                setIsCommandPaletteOpen(true);
               }}
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 text-sm font-semibold text-white bg-crimson rounded-xl shadow-glow-crimson"
+              title="Open Command Palette (Cmd+K / Ctrl+K)"
+              className="hidden lg:flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-mono text-softGray hover:text-gold hover:bg-gold/10 transition-colors border border-transparent hover:border-gold/30"
             >
-              <Download className="w-4 h-4" />
-              <span>{locale === 'id' ? 'Unduh Resume / CV' : 'Download Resume / CV'}</span>
+              <Command size={10} className="text-gold" />
+              <span>⌘K</span>
             </button>
 
-            <div className="flex items-center justify-between text-xs text-platinum-muted font-mono">
-              <span>{data.profile.fullName}</span>
-              <Link
-                href="/admin"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-1 hover:text-crimson"
-              >
-                <Shield className="w-3.5 h-3.5" />
-                <span>Admin</span>
-              </Link>
+            {/* Executive Availability Radar Trigger */}
+            <button
+              onClick={() => {
+                sound.playClick();
+                setIsAvailabilityModalOpen(true);
+              }}
+              title="Status Radar Ketersediaan Karier & Kemitraan Eksekutif"
+              className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-sans font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/25 transition-all border border-emerald-500/30"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Radar</span>
+            </button>
+
+            {/* Executive Keynote Presentation Mode Trigger */}
+            <button
+              onClick={() => {
+                sound.playClick();
+                setIsPresentationOpen(true);
+              }}
+              title="Mode Presentasi Eksekutif / Keynote (Shortcut: Tekan P)"
+              className="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-sans font-bold uppercase tracking-wider text-gold bg-gold/15 hover:bg-gold hover:text-obsidian transition-all border border-gold/30 shadow-[0_0_10px_rgba(197,164,119,0.2)]"
+            >
+              <Presentation size={12} />
+              <span>Presentasi [P]</span>
+            </button>
+
+            {/* Language Selector: ID | EN | 中文 */}
+            <div className="flex items-center bg-black/40 border border-hairline/60 dark:border-gold/25 rounded-full p-0.5 text-[10px] font-sans font-semibold">
+              {languages.map((lang) => {
+                const isCurrent = locale === lang.code;
+                return (
+                  <button
+                    key={lang.code}
+                    onClick={() => {
+                      sound.playClick();
+                      setLocale(lang.code);
+                    }}
+                    title={`Switch to ${lang.label}`}
+                    className={`px-2 py-0.5 rounded-full transition-all duration-200 ${
+                      isCurrent
+                        ? 'bg-gold text-obsidian font-bold shadow-xs'
+                        : 'text-softGray hover:text-ivory'
+                    }`}
+                  >
+                    {lang.label}
+                  </button>
+                );
+              })}
             </div>
+
+            {/* Audio Toggle */}
+            <button
+              onClick={() => toggleSound()}
+              title={soundEnabled ? 'Mute Sound FX' : 'Enable Sound FX'}
+              className={`p-1.5 rounded-full transition-colors ${
+                soundEnabled
+                  ? 'text-gold bg-gold/15'
+                  : 'text-softGray hover:text-ivory hover:bg-white/5'
+              }`}
+            >
+              {soundEnabled ? <Volume2 size={13} /> : <VolumeX size={13} />}
+            </button>
+
+            {/* Theme Toggle (Dark / Light) */}
+            <button
+              onClick={() => {
+                sound.playClick();
+                toggleTheme();
+              }}
+              title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+              className="p-1.5 rounded-full text-softGray hover:text-gold hover:bg-white/5 transition-colors"
+            >
+              {theme === 'dark' ? <Sun size={13} /> : <Moon size={13} />}
+            </button>
+
+            {/* CV Download CTA Modal Trigger */}
+            <button
+              onClick={() => {
+                sound.playClick();
+                setIsCvModalOpen(true);
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gold hover:bg-gold-light text-obsidian text-[11px] font-sans font-bold uppercase tracking-wider transition-all duration-300 hover:shadow-gold-subtle hover:scale-102 active:scale-98"
+            >
+              <Download size={11} className="stroke-[2.5]" />
+              <span className="hidden sm:inline">CV</span>
+            </button>
+
+            {/* Mobile Menu Hamburger Button */}
+            <button
+              onClick={() => {
+                sound.playClick();
+                setMobileMenuOpen(!mobileMenuOpen);
+              }}
+              className="p-1.5 rounded-full xl:hidden text-softGray hover:text-ivory focus:outline-none"
+              aria-label="Toggle Menu"
+            >
+              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
           </div>
         </div>
-      )}
+
+        {/* Mobile Fullscreen Luxury Drawer */}
+        {mobileMenuOpen && (
+          <div className="xl:hidden mt-3 max-w-md mx-auto rounded-2xl bg-obsidian/95 backdrop-blur-2xl border border-gold/30 p-6 shadow-2xl text-ivory pointer-events-auto animate-fadeIn">
+            <div className="flex items-center justify-between pb-4 border-b border-hairline/60">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full border border-gold bg-gold/15 flex items-center justify-center font-serif text-gold text-[10px] font-bold">
+                  ZZ
+                </div>
+                <span className="text-xs font-serif font-bold text-ivory">
+                  ZEFANYA ZULIAN
+                </span>
+              </div>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-1 rounded-full text-softGray hover:text-ivory"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Links list */}
+            <div className="py-4 space-y-2 font-serif">
+              {navItems.map((item, idx) => {
+                const labelText = item.label[locale] || item.label.id;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => {
+                      sound.playClick();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="flex items-center justify-between text-base py-2 px-3 rounded-lg hover:bg-gold/10 hover:text-gold transition-colors"
+                  >
+                    <span>{labelText}</span>
+                    <span className="text-xs font-sans text-softGray">0{idx + 1}</span>
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* Language Switcher on Mobile Drawer */}
+            <div className="pt-3 pb-4 border-t border-hairline/40 flex items-center justify-between">
+              <span className="text-xs text-softGray uppercase tracking-wider font-sans">
+                {locale === 'id' ? 'Pilih Bahasa' : locale === 'en' ? 'Select Language' : '选择语言'}
+              </span>
+              <div className="flex items-center gap-1 bg-black/50 p-1 rounded-full border border-gold/30">
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => {
+                      sound.playClick();
+                      setLocale(lang.code);
+                    }}
+                    className={`px-3 py-1 rounded-full text-xs font-sans font-semibold transition-colors ${
+                      locale === lang.code
+                        ? 'bg-gold text-obsidian font-bold'
+                        : 'text-softGray hover:text-ivory'
+                    }`}
+                  >
+                    {lang.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="pt-2 space-y-2">
+              <button
+                onClick={() => {
+                  sound.playClick();
+                  setMobileMenuOpen(false);
+                  setIsAvailabilityModalOpen(true);
+                }}
+                className="w-full py-2 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-sans text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>{locale === 'id' ? 'STATUS RADAR EKSEKUTIF' : locale === 'en' ? 'EXECUTIVE RADAR STATUS' : '高管履新就职雷达'}</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  sound.playClick();
+                  setMobileMenuOpen(false);
+                  setIsCvModalOpen(true);
+                }}
+                className="w-full py-2.5 rounded-full bg-gold hover:bg-gold-light text-obsidian font-sans text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-gold-subtle"
+              >
+                <Download size={13} />
+                <span>DOWNLOAD CURRICULUM VITAE</span>
+              </button>
+
+              <Link
+                href="/card"
+                onClick={() => {
+                  sound.playClick();
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full py-2 rounded-full border border-gold/40 hover:bg-gold/10 text-gold font-sans text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2"
+              >
+                <CreditCard size={13} />
+                <span>DIGITAL BUSINESS CARD</span>
+              </Link>
+            </div>
+
+            <div className="pt-4 flex items-center justify-between text-[10px] font-sans text-softGray">
+              <span>BEKASI, INDONESIA</span>
+              <span>JKT {currentTime} WIB</span>
+            </div>
+          </div>
+        )}
+      </header>
     </>
   );
 }

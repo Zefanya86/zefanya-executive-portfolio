@@ -2,103 +2,111 @@
 
 import React, { useState } from 'react';
 import { usePortfolio } from '@/context/PortfolioContext';
-import {
-  Layers,
-  CheckCircle,
-  Truck,
-  ShieldCheck,
-  TrendingUp,
-  Users,
-  Compass,
-  Briefcase,
-  SlidersHorizontal,
-} from 'lucide-react';
+import { Layers, ShieldCheck, Check } from 'lucide-react';
+import { sound } from '@/lib/sound';
 
 export default function CompetenciesSection() {
   const { data, locale, t } = usePortfolio();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   const categories = [
-    { id: 'all', label: locale === 'id' ? 'Semua Bidang (15)' : 'All Capabilities (15)' },
-    { id: 'operations', label: locale === 'id' ? 'Operations' : 'Operations' },
-    { id: 'procurement', label: locale === 'id' ? 'Procurement' : 'Procurement' },
-    { id: 'logistics', label: locale === 'id' ? 'Logistics & Fleet' : 'Logistics & Fleet' },
-    { id: 'leadership', label: locale === 'id' ? 'Leadership' : 'Leadership' },
-    { id: 'strategy', label: locale === 'id' ? 'Strategy & KPI' : 'Strategy & KPI' },
+    { id: 'all', label: { id: 'Semua Kompetensi (15)', en: 'All Competencies (15)', zh: '全部核心能力 (15)' } },
+    { id: 'operations', label: { id: 'Operations', en: 'Operations', zh: '运营管控' } },
+    { id: 'procurement', label: { id: 'Procurement', en: 'Procurement', zh: '物资采购' } },
+    { id: 'logistics', label: { id: 'Logistics', en: 'Logistics', zh: '重大物流' } },
+    { id: 'leadership', label: { id: 'Leadership', en: 'Leadership', zh: '团队领导' } },
+    { id: 'strategy', label: { id: 'Strategy & Compliance', en: 'Strategy & Compliance', zh: '战略与合规' } },
   ];
 
-  const filteredCompetencies = selectedCategory === 'all'
-    ? data.competencies
-    : data.competencies.filter((c) => c.category === selectedCategory);
+  const filteredCompetencies =
+    selectedCategory === 'all'
+      ? data.competencies
+      : data.competencies.filter((c) => c.category === selectedCategory);
 
   return (
-    <section id="competencies" className="relative py-24 bg-graphite border-t border-platinum/10 overflow-hidden">
-      {/* Background Accent */}
-      <div className="absolute -bottom-24 right-0 w-96 h-96 bg-crimson/5 rounded-full blur-3xl pointer-events-none" />
-
+    <section id="competencies" className="relative py-28 bg-obsidian border-t border-hairline overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="max-w-3xl space-y-3">
-            <div className="inline-flex items-center gap-2 text-xs font-mono text-crimson tracking-widest uppercase">
-              <span className="w-6 h-px bg-crimson" />
-              <span>04 // {locale === 'id' ? 'KOMPETENSI INTI' : 'AREAS OF EXPERTISE'}</span>
-            </div>
-
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-warmWhite">
-              {locale === 'id' ? 'Keahlian & Kapabilitas Eksekutif' : 'Core Executive Competencies'}
-            </h2>
-
-            <p className="text-base sm:text-lg text-platinum-muted font-normal pt-1">
-              {locale === 'id'
-                ? 'Struktur kompetensi komprehensif yang telah divalidasi melalui pengalaman manajerial lapangan dan tata kelola korporat.'
-                : 'Comprehensive operational competencies validated through hands-on enterprise leadership and field governance.'}
-            </p>
+        <div className="max-w-4xl space-y-4 mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-charcoal border border-gold/30 text-[10px] sm:text-xs font-sans text-gold tracking-widest uppercase font-semibold">
+            <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
+            <span>04 // CORE EXPERTISE & COMPETENCIES</span>
           </div>
+
+          <h2 className="text-3xl sm:text-5xl font-serif font-bold tracking-tight text-ivory leading-tight">
+            {locale === 'id' ? (
+              <>
+                Matriks Kompetensi & <br />
+                <span className="gold-gradient-text">Keahlian Profesional.</span>
+              </>
+            ) : locale === 'en' ? (
+              <>
+                Core Competencies & <br />
+                <span className="gold-gradient-text">Professional Expertise.</span>
+              </>
+            ) : (
+              <>
+                核心胜任力矩阵与 <br />
+                <span className="gold-gradient-text">专业管理技能体系。</span>
+              </>
+            )}
+          </h2>
+
+          <p className="text-base sm:text-lg text-softGray font-sans font-normal leading-relaxed">
+            {locale === 'id'
+              ? 'Seluruh kompetensi divalidasi langsung melalui pengalaman manajerial riil pada proyek konstruksi, transportasi mineral, dan pengadaan korporat.'
+              : locale === 'en'
+              ? 'Authentic operational and management capabilities grounded in direct leadership across heavy civil infrastructure, mineral logistics, and enterprise procurement.'
+              : '所有专业能力均经过国家大型工程实战、大宗矿产调度及企业级采购管理的直接检验与真实验证。'}
+          </p>
         </div>
 
         {/* Filter Pills */}
-        <div className="mt-8 flex flex-wrap items-center gap-2 pb-2">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-mono transition-all duration-200 ${
-                selectedCategory === cat.id
-                  ? 'bg-crimson text-white font-semibold shadow-glow-crimson'
-                  : 'bg-obsidian-soft text-platinum-muted border border-platinum/10 hover:border-platinum/25 hover:text-white'
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
+        <div className="flex flex-wrap items-center gap-2 pb-10">
+          {categories.map((cat) => {
+            const label = cat.label[locale] || cat.label.id;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => {
+                  sound.playClick();
+                  setSelectedCategory(cat.id);
+                }}
+                className={`px-4 py-2 rounded-full text-xs font-sans tracking-wider uppercase transition-all duration-300 ${
+                  selectedCategory === cat.id
+                    ? 'bg-gold text-obsidian font-bold shadow-gold-subtle'
+                    : 'bg-charcoal text-softGray border border-hairline hover:border-gold/40 hover:text-ivory'
+                }`}
+              >
+                {label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Competencies Grid */}
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredCompetencies.map((comp, idx) => (
             <div
               key={comp.id}
-              className="p-5 sm:p-6 rounded-2xl bg-graphite-surface border border-platinum/10 hover:border-crimson/50 hover:bg-graphite transition-all duration-300 group shadow-sm hover:shadow-card-executive relative overflow-hidden"
+              className="p-6 rounded-2xl bg-charcoal border border-hairline hover:border-gold/50 transition-all duration-300 group shadow-luxury-card hover:shadow-gold-subtle cursor-pointer hover:-translate-y-0.5"
             >
-              {/* Subtle crimson accent line on top */}
-              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-crimson/30 to-transparent group-hover:via-crimson transition-all duration-500" />
-
               <div className="flex items-start justify-between gap-3">
-                <span className="text-[11px] font-mono text-crimson uppercase tracking-wider font-semibold">
+                <span className="text-[10px] font-sans text-gold uppercase tracking-widest font-bold">
                   {comp.category}
                 </span>
-                <span className="text-xs font-mono text-platinum-muted/50">
+                <span className="text-xs font-mono text-softGray/50 font-bold">
                   #{idx + 1 < 10 ? `0${idx + 1}` : idx + 1}
                 </span>
               </div>
 
-              <h3 className="text-base sm:text-lg font-bold text-warmWhite mt-2 group-hover:text-white transition">
+              <h3 className="text-base font-serif font-bold text-ivory mt-2 group-hover:text-gold transition-colors">
                 {t(comp.title)}
               </h3>
 
               {comp.description && (
-                <p className="text-xs sm:text-sm text-platinum-muted mt-2 leading-relaxed">
+                <p className="text-xs text-softGray mt-2 font-sans leading-relaxed">
                   {t(comp.description)}
                 </p>
               )}

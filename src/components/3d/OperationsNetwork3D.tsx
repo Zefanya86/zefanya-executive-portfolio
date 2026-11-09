@@ -50,7 +50,7 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
       coords: '6.9288° S, 106.2536° E',
       status: 'Field Operations',
       earthUrl: 'https://earth.google.com/web/@-6.9288,106.2536,120a,9000d,35y,0h,55t,0r',
-      highlights: '10,000 Ton/Minggu Mineral Transport · Zero Bottleneck Fleet Dispatch',
+      highlights: 'Mineral Flow Transport Operations · Fleet Dispatch & Hauling Scheduling',
     },
     {
       id: 2,
@@ -145,10 +145,10 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
     sunLight.position.set(7, 5, 6);
     scene.add(sunLight);
 
-    // Subtle Crimson Accent Rim Light
-    const crimsonRim = new THREE.PointLight(0xd72e43, 3.5, 25);
-    crimsonRim.position.set(-7, 2, -5);
-    scene.add(crimsonRim);
+    // Subtle Cobalt Accent Rim Light
+    const cobaltRim = new THREE.PointLight(0x3457D5, 3.5, 25);
+    cobaltRim.position.set(-7, 2, -5);
+    scene.add(cobaltRim);
 
     // 5. Main Rotating Operations Group
     const networkGroup = new THREE.Group();
@@ -244,7 +244,7 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
 
     const secondRingGeo = new THREE.RingGeometry(2.65, 2.68, 64);
     const secondRingMat = new THREE.MeshBasicMaterial({
-      color: 0xd72e43,
+      color: 0x3457D5,
       side: THREE.DoubleSide,
       transparent: true,
       opacity: 0.4,
@@ -261,8 +261,8 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
       // Beacon Sphere Marker
       const sphereGeo = new THREE.SphereGeometry(0.065, 16, 16);
       const sphereMat = new THREE.MeshStandardMaterial({
-        color: idx === 0 ? 0xd72e43 : 0xff3855,
-        emissive: idx === 0 ? 0xd72e43 : 0xa11c2e,
+        color: idx === 0 ? 0xD9F36A : 0x3457D5,
+        emissive: idx === 0 ? 0xD9F36A : 0x3457D5,
         emissiveIntensity: 2.2,
         roughness: 0.1,
       });
@@ -274,7 +274,7 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
       // Outer Radar Pulse Ring
       const pulseGeo = new THREE.RingGeometry(0.09, 0.13, 32);
       const pulseMat = new THREE.MeshBasicMaterial({
-        color: 0xd72e43,
+        color: 0xD9F36A,
         side: THREE.DoubleSide,
         transparent: true,
         opacity: 0.85,
@@ -293,7 +293,7 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
       const points = curve.getPoints(50);
       const geo = new THREE.BufferGeometry().setFromPoints(points);
       const mat = new THREE.LineBasicMaterial({
-        color: 0xd72e43,
+        color: 0x3457D5,
         transparent: true,
         opacity: 0.85,
       });
@@ -519,34 +519,34 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
   const activeProject = projectNodes[activeNode];
 
   return (
-    <div className={`relative w-full rounded-3xl bg-white/[0.04] backdrop-blur-2xl backdrop-saturate-150 border border-white/15 p-4 sm:p-6 shadow-[0_16px_45px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.25)] overflow-hidden ${className}`}>
-      {/* Top HUD Telemetry & Mode Selector Bar - Clean Glass Morph */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-white/10 pb-4">
+    <div className={`relative w-full rounded-2xl bg-white/80 dark:bg-black/60 backdrop-blur-xl border border-hairline dark:border-white/10 p-4 sm:p-6 shadow-xl overflow-hidden ${className}`}>
+      {/* Top HUD Telemetry & Mode Selector Bar */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-hairline dark:border-white/10 pb-4">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-2xl bg-white/10 border border-white/20 text-crimson-light shadow-sm backdrop-blur-md">
+          <div className="p-2.5 rounded-xl bg-cobalt/15 border border-cobalt/30 text-cobalt dark:text-limeAccent shadow-sm">
             <Globe className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-sm sm:text-base font-bold text-white tracking-tight flex items-center gap-2">
+            <h3 className="text-sm sm:text-base font-extrabold text-ink dark:text-ivory tracking-tight flex items-center gap-2 font-display">
               <span>Google Earth 3D Operations & Logistics Grid</span>
-              <span className="w-2 h-2 rounded-full bg-crimson animate-ping" />
+              <span className="w-2 h-2 rounded-full bg-limeAccent animate-pulse" />
             </h3>
-            <p className="text-[11px] font-mono text-platinum-muted">
+            <p className="text-[11px] font-mono text-mutedGray">
               Citra Satelit 3D Fotorealistik · Jaringan Manajemen Operasional Zefanya Zulian
             </p>
           </div>
         </div>
 
-        {/* View Mode & Controls Toolbar - Clear Glass */}
+        {/* View Mode & Controls Toolbar */}
         <div className="flex flex-wrap items-center gap-2">
           {/* Mode Switch: Google Earth vs Tactical */}
-          <div className="p-1 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/15 flex items-center gap-1 text-xs">
+          <div className="p-1 rounded-full bg-gray-100 dark:bg-black/60 border border-hairline dark:border-white/10 flex items-center gap-1 text-xs">
             <button
               onClick={() => setViewMode('google-earth')}
-              className={`px-3 py-1.5 rounded-xl font-mono flex items-center gap-1.5 transition ${
+              className={`px-3 py-1.5 rounded-full font-mono flex items-center gap-1.5 transition ${
                 viewMode === 'google-earth'
-                  ? 'bg-crimson text-white font-bold shadow-glow-crimson'
-                  : 'text-platinum-muted hover:text-white'
+                  ? 'bg-cobalt text-white font-bold shadow-sm'
+                  : 'text-mutedGray hover:text-ink dark:hover:text-white'
               }`}
               title="Aktifkan Tampilan Satelit Google Earth 3D"
             >
@@ -555,10 +555,10 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
             </button>
             <button
               onClick={() => setViewMode('tactical')}
-              className={`px-3 py-1.5 rounded-xl font-mono flex items-center gap-1.5 transition ${
+              className={`px-3 py-1.5 rounded-full font-mono flex items-center gap-1.5 transition ${
                 viewMode === 'tactical'
-                  ? 'bg-crimson text-white font-bold shadow-glow-crimson'
-                  : 'text-platinum-muted hover:text-white'
+                  ? 'bg-limeAccent text-ink font-bold shadow-sm'
+                  : 'text-mutedGray hover:text-ink dark:hover:text-white'
               }`}
               title="Aktifkan Tampilan Tactical Cyber Grid"
             >
@@ -570,10 +570,10 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
           {/* Auto-Rotation Toggle */}
           <button
             onClick={() => setIsRotating(!isRotating)}
-            className={`p-2 rounded-2xl border transition ${
+            className={`p-2 rounded-full border transition ${
               isRotating
-                ? 'bg-crimson/20 border-crimson/40 text-crimson-light'
-                : 'bg-black/40 backdrop-blur-md border-white/15 text-platinum-muted hover:text-white'
+                ? 'bg-cobalt/15 border-cobalt/40 text-cobalt dark:text-limeAccent'
+                : 'bg-gray-100 dark:bg-black/60 border-hairline dark:border-white/10 text-mutedGray hover:text-ink dark:hover:text-white'
             }`}
             title={isRotating ? 'Jeda Rotasi Otomatis' : 'Mulai Rotasi Otomatis'}
           >
@@ -581,17 +581,17 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
           </button>
 
           {/* Zoom Buttons */}
-          <div className="flex items-center rounded-2xl bg-black/40 backdrop-blur-md border border-white/15">
+          <div className="flex items-center rounded-full bg-gray-100 dark:bg-black/60 border border-hairline dark:border-white/10">
             <button
               onClick={() => setZoomLevel((prev) => Math.max(prev - 0.6, 3.6))}
-              className="p-2 text-platinum-muted hover:text-white border-r border-white/10 transition"
+              className="p-2 text-mutedGray hover:text-ink dark:hover:text-white border-r border-hairline dark:border-white/10 transition"
               title="Zoom In Satelit"
             >
               <ZoomIn className="w-4 h-4" />
             </button>
             <button
               onClick={() => setZoomLevel((prev) => Math.min(prev + 0.6, 7.5))}
-              className="p-2 text-platinum-muted hover:text-white transition"
+              className="p-2 text-mutedGray hover:text-ink dark:hover:text-white transition"
               title="Zoom Out Satelit"
             >
               <ZoomOut className="w-4 h-4" />
@@ -602,7 +602,7 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
 
       {/* Node Fast Selector Buttons */}
       <div className="flex flex-wrap items-center gap-2 pt-3 pb-1">
-        <span className="text-[11px] font-mono text-platinum-muted uppercase mr-1">Fokus Lokasi:</span>
+        <span className="text-[11px] font-mono text-mutedGray uppercase mr-1">Fokus Lokasi:</span>
         {projectNodes.map((node) => (
           <button
             key={node.id}
@@ -610,13 +610,13 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
               setActiveNode(node.id);
               setIsRotating(false);
             }}
-            className={`px-3 py-1 rounded-xl text-xs font-mono transition-all flex items-center gap-1.5 ${
+            className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 ${
               activeNode === node.id
-                ? 'bg-crimson text-white font-bold shadow-glow-crimson scale-102'
-                : 'bg-white/5 border border-white/10 text-platinum hover:text-white hover:border-white/25 backdrop-blur-md'
+                ? 'bg-limeAccent text-ink font-bold shadow-sm scale-105'
+                : 'bg-white/5 border border-hairline dark:border-white/10 text-graphite dark:text-gray-300 hover:text-ink dark:hover:text-white'
             }`}
           >
-            <MapPin className="w-3 h-3 text-crimson-light" />
+            <MapPin className="w-3 h-3 text-cobalt" />
             <span>#{node.id + 1} {node.name.split(' ')[0]}</span>
           </button>
         ))}
@@ -626,7 +626,7 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
           href="https://earth.google.com/web/@-5.5000,111.0000,1000a,2500000d,35y,0h,20t,0r"
           target="_blank"
           rel="noopener noreferrer"
-          className="ml-auto px-3 py-1 rounded-xl text-xs font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 hover:bg-emerald-900/50 backdrop-blur-md transition flex items-center gap-1.5"
+          className="ml-auto px-3 py-1 rounded-full text-xs font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 transition flex items-center gap-1.5"
           title="Buka Koridor Operasional Indonesia di Google Earth Web (earth.google.com)"
         >
           <span>earth.google.com</span>
@@ -638,41 +638,41 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
       <div className="relative w-full h-[360px] sm:h-[430px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none my-2">
         <div ref={containerRef} className="w-full h-full" />
 
-        {/* Drag & Controls Watermark - Glass Morph */}
+        {/* Drag & Controls Watermark */}
         <div className="absolute top-3 left-3 pointer-events-none flex flex-col gap-1.5">
-          <span className="text-[10px] font-mono text-platinum-muted uppercase tracking-widest px-3 py-1 rounded-xl bg-black/50 border border-white/15 backdrop-blur-md">
+          <span className="text-[10px] font-mono text-mutedGray uppercase tracking-widest px-3 py-1 rounded-full bg-black/60 border border-white/15 backdrop-blur-md text-white">
             Putar 360° · Scroll untuk Zoom · Drag dengan Inersia Fisik
           </span>
-          <div className="inline-flex items-center gap-1.5 text-[10px] font-mono text-emerald-300 bg-emerald-950/70 border border-emerald-500/25 px-2.5 py-0.5 rounded-lg backdrop-blur-md w-fit">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Google Earth PBR Realistic Satellite Shading</span>
+          <div className="inline-flex items-center gap-1.5 text-[10px] font-mono text-limeAccent bg-black/60 border border-limeAccent/30 px-2.5 py-0.5 rounded-full backdrop-blur-md w-fit">
+            <span className="w-1.5 h-1.5 rounded-full bg-limeAccent animate-pulse" />
+            <span>Google Earth PBR Satellite Shading</span>
           </div>
         </div>
 
-        {/* Live Active Node Floating Overlay Card - Clean Glass Morph */}
-        <div className="absolute bottom-3 left-3 right-3 sm:right-auto sm:max-w-md p-4 rounded-2xl bg-black/55 backdrop-blur-2xl border border-white/20 shadow-[0_12px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.25)] pointer-events-auto">
+        {/* Live Active Node Floating Overlay Card */}
+        <div className="absolute bottom-3 left-3 right-3 sm:right-auto sm:max-w-md p-4 rounded-2xl bg-black/80 backdrop-blur-xl border border-white/15 shadow-2xl pointer-events-auto text-white">
           <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2 mb-2">
-            <div className="flex items-center gap-1.5 text-xs font-mono text-crimson-light font-bold">
-              <MapPin className="w-3.5 h-3.5 text-crimson" />
+            <div className="flex items-center gap-1.5 text-xs font-mono text-limeAccent font-bold">
+              <MapPin className="w-3.5 h-3.5 text-limeAccent" />
               <span>{activeProject.name}</span>
             </div>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-lg bg-emerald-950/80 text-emerald-300 border border-emerald-500/30">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cobalt/30 text-white border border-cobalt/50">
               {activeProject.status}
             </span>
           </div>
 
           <h4 className="text-sm font-bold text-white">{activeProject.company}</h4>
-          <p className="text-xs text-crimson-light font-mono mt-0.5">{activeProject.role}</p>
-          <p className="text-xs text-platinum-muted mt-1 leading-relaxed">
+          <p className="text-xs text-limeAccent font-mono mt-0.5">{activeProject.role}</p>
+          <p className="text-xs text-gray-300 mt-1 leading-relaxed">
             {activeProject.scope}
           </p>
 
-          <div className="mt-2 text-[11px] font-mono text-emerald-300/90 bg-white/[0.04] px-2.5 py-1 rounded-xl border border-white/10">
+          <div className="mt-2 text-[11px] font-mono text-gray-300 bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
             ✓ {activeProject.highlights}
           </div>
 
           <div className="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between gap-2">
-            <span className="text-[10px] font-mono text-platinum-muted/70">
+            <span className="text-[10px] font-mono text-gray-400">
               {activeProject.coords}
             </span>
 
@@ -681,7 +681,7 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
               href={activeProject.earthUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-crimson hover:bg-crimson-dark text-white text-xs font-mono font-semibold shadow-glow-crimson transition active:scale-95"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-limeAccent text-ink text-xs font-mono font-bold transition hover:scale-105 active:scale-95"
             >
               <span>Buka di Google Earth 3D</span>
               <ExternalLink className="w-3 h-3" />
@@ -690,23 +690,23 @@ export default function OperationsNetwork3D({ className = '' }: OperationsNetwor
         </div>
       </div>
 
-      {/* Bottom Live Metrics - Clear Frosted Glass Chips */}
-      <div className="mt-2 pt-3 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-        <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 backdrop-blur-md">
-          <span className="text-[10px] font-mono text-platinum-muted uppercase block">Citra 3D Satelit</span>
-          <span className="text-xs sm:text-sm font-bold text-emerald-400 font-mono mt-0.5 block">Fotorealistik PBR</span>
+      {/* Bottom Live Metrics */}
+      <div className="mt-2 pt-3 border-t border-hairline dark:border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+        <div className="p-2.5 rounded-xl bg-ivory dark:bg-black/60 border border-hairline dark:border-white/10">
+          <span className="text-[10px] font-mono text-mutedGray uppercase block">Citra 3D Satelit</span>
+          <span className="text-xs sm:text-sm font-bold text-limeAccent font-mono mt-0.5 block">Fotorealistik PBR</span>
         </div>
-        <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 backdrop-blur-md">
-          <span className="text-[10px] font-mono text-platinum-muted uppercase block">Mineral Transport</span>
-          <span className="text-xs sm:text-sm font-bold text-white font-mono mt-0.5 block">10.000 Ton/Minggu</span>
+        <div className="p-2.5 rounded-xl bg-ivory dark:bg-black/60 border border-hairline dark:border-white/10">
+          <span className="text-[10px] font-mono text-mutedGray uppercase block">Mineral Transport</span>
+          <span className="text-xs sm:text-sm font-bold text-ink dark:text-ivory font-mono mt-0.5 block">Bayah Mineral Flow</span>
         </div>
-        <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 backdrop-blur-md">
-          <span className="text-[10px] font-mono text-platinum-muted uppercase block">Material Procurement</span>
-          <span className="text-xs sm:text-sm font-bold text-crimson-light font-mono mt-0.5 block">Jembatan Maritim</span>
+        <div className="p-2.5 rounded-xl bg-ivory dark:bg-black/60 border border-hairline dark:border-white/10">
+          <span className="text-[10px] font-mono text-mutedGray uppercase block">Material Procurement</span>
+          <span className="text-xs sm:text-sm font-bold text-cobalt font-mono mt-0.5 block">Jembatan Maritim</span>
         </div>
-        <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 backdrop-blur-md">
-          <span className="text-[10px] font-mono text-platinum-muted uppercase block">Pusat Komando</span>
-          <span className="text-xs sm:text-sm font-bold text-platinum font-mono mt-0.5 block">Bekasi Strategic HQ</span>
+        <div className="p-2.5 rounded-xl bg-ivory dark:bg-black/60 border border-hairline dark:border-white/10">
+          <span className="text-[10px] font-mono text-mutedGray uppercase block">Pusat Komando</span>
+          <span className="text-xs sm:text-sm font-bold text-ink dark:text-ivory font-mono mt-0.5 block">Bekasi Strategic HQ</span>
         </div>
       </div>
     </div>

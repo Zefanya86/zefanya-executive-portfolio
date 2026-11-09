@@ -1,5 +1,14 @@
 [
   {
+    "id": "inq-1792567914658-i5tpu",
+    "name": "Recruiter QA Test",
+    "email": "recruiter.test@globalfirm.com",
+    "subject": "Senior Operations Director Position",
+    "message": "Dear Zefanya, we are impressed with your background in procurement, infrastructure logistics, and corporate operations.",
+    "receivedAt": "2026-10-21T07:31:54.658Z",
+    "read": false
+  },
+  {
     "id": "inq-1792525917305-8yl94",
     "name": "Global Executive Recruiter",
     "email": "executive.talent@corporation.com",

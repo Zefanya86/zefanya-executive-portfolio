@@ -1,9 +1,21 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import { usePortfolio } from '@/context/PortfolioContext';
-import { Workflow, Truck, Users2, Layers, CheckCircle, ShieldCheck, Award, Briefcase } from 'lucide-react';
+import {
+  Workflow,
+  Truck,
+  Users2,
+  Layers,
+  CheckCircle2,
+  ShieldCheck,
+  Award,
+  GraduationCap,
+  Sparkles,
+  MapPin,
+  Building2,
+} from 'lucide-react';
+import { sound } from '@/lib/sound';
 
 export default function ExecutiveIntro() {
   const { data, locale, t } = usePortfolio();
@@ -11,165 +23,254 @@ export default function ExecutiveIntro() {
   const pillars = [
     {
       icon: Workflow,
-      title: locale === 'id' ? 'Operations & Governance' : 'Operations & Governance',
-      desc: locale === 'id'
-        ? 'Standarisasi SOP menyeluruh, monitoring KPI terukur, dan mitigasi downtime operasional.'
-        : 'Comprehensive SOP standardisation, measurable KPI telemetry, and operational downtime mitigation.',
+      code: 'PILLAR 01',
+      title: {
+        id: 'Operations Management',
+        en: 'Operations Management',
+        zh: '精益运营管理'
+      },
+      desc: {
+        id: 'Pengelolaan operasional menyeluruh, implementasi SOP ketat, monitoring KPI terukur, dan mitigasi downtime.',
+        en: 'Comprehensive operational governance, SOP implementation, measurable KPI telemetry, and downtime reduction.',
+        zh: '统筹企业与现场日常运营全流程，严抓作业标准规范（SOP）落实与量化KPI监控，切实杜绝停机延误。'
+      },
+      tag: 'OPERATIONS',
     },
     {
       icon: Layers,
-      title: locale === 'id' ? 'Strategic Procurement' : 'Strategic Procurement',
-      desc: locale === 'id'
-        ? 'Sourcing material konstruksi skala besar, evaluasi rekanan kredibel, dan inventory control.'
-        : 'High-spec industrial material sourcing, verified supplier networks, and strict inventory control.',
+      code: 'PILLAR 02',
+      title: {
+        id: 'Procurement Strategy',
+        en: 'Strategic Procurement',
+        zh: '战略物资采购'
+      },
+      desc: {
+        id: 'End-to-end material procurement proyek infrastruktur skala besar, evaluasi rekanan, dan stock control.',
+        en: 'End-to-end heavy construction procurement, accredited vendor management, and stock control systems.',
+        zh: '特大型工程原材料全周期集中采购供应、严选源头高资质供应商，建立精细化动态库存盘点机制。'
+      },
+      tag: 'SUPPLY CHAIN',
     },
     {
       icon: Truck,
-      title: locale === 'id' ? 'Logistics Coordination' : 'Logistics Coordination',
-      desc: locale === 'id'
-        ? 'Supervisi loading, hauling, dan delivery pengangkutan mineral serta kesiapan armada berat.'
-        : 'Supervising loading, hauling, and delivery schedules for heavy mineral fleets with zero bottlenecks.',
+      code: 'PILLAR 03',
+      title: {
+        id: 'Logistics Coordination',
+        en: 'Logistics Coordination',
+        zh: '重大物流调度'
+      },
+      desc: {
+        id: 'Supervisi loading, hauling, dan delivery pengangkutan mineral serta kesiapan armada berat di lapangan.',
+        en: 'Managing heavy mineral flow logistics, hauling dispatch, turnaround speed, and fleet safety readiness.',
+        zh: '统领矿产大宗转运装载、长途重卡运输与现场交付全链条调度，确保车队高负荷出勤与零安全隐患。'
+      },
+      tag: 'HAULING & FREIGHT',
     },
     {
       icon: Users2,
-      title: locale === 'id' ? 'Cross-Functional Leadership' : 'Cross-Functional Leadership',
-      desc: locale === 'id'
-        ? 'Menyelaraskan tim operasional, finance, engineering, otoritas sipil, dan stakeholder kunci.'
-        : 'Aligning operational, engineering, financial, civil authorities, and senior corporate stakeholders.',
+      code: 'PILLAR 04',
+      title: {
+        id: 'Executive Leadership',
+        en: 'Executive Leadership',
+        zh: '高管组织领导力'
+      },
+      desc: {
+        id: 'Pengalaman memimpin BEM Universitas, organisasi kepemudaan GEMA-RI, dan manajemen perusahaan.',
+        en: 'University Student Body Presidency, GEMA-RI municipal branch leadership, and corporate governance.',
+        zh: '历经全校最高学生会总会主席、市级全国青年组织领袖及现代企业总经理历练，具备果断战略执行力。'
+      },
+      tag: 'GOVERNANCE',
     },
   ];
 
-  const portraitSrc = data.hero.portraitUrl || '/zefanya-portrait.jpg';
-
   return (
-    <section id="about" className="relative py-24 bg-graphite border-t border-platinum/10 overflow-hidden">
-      {/* Background Decorative Accents */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-crimson/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-platinum/5 rounded-full blur-3xl pointer-events-none" />
+    <section id="about" className="relative py-24 sm:py-28 bg-obsidian border-t border-hairline overflow-hidden">
+      {/* Background subtle gold glow */}
+      <div className="absolute top-1/2 left-0 w-96 h-96 bg-gold/5 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
         {/* Section Header */}
-        <div className="max-w-3xl space-y-3">
-          <div className="inline-flex items-center gap-2 text-xs font-mono text-crimson tracking-widest uppercase">
-            <span className="w-6 h-px bg-crimson" />
-            <span>02 // {locale === 'id' ? 'PROFIL EKSEKUTIF' : 'EXECUTIVE INTRODUCTION'}</span>
+        <div className="max-w-3xl space-y-4 mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-charcoal border border-gold/30 text-[10px] sm:text-xs font-sans text-gold tracking-widest uppercase font-semibold">
+            <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
+            <span>01 // EXECUTIVE PROFILE & CREDENTIALS</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-warmWhite">
-            {locale === 'id' ? 'More Than Managing Operations.' : 'More Than Managing Operations.'}
+          <h2 className="text-3xl sm:text-5xl font-serif font-bold tracking-tight text-ivory leading-tight">
+            {locale === 'id' ? (
+              <>
+                Kredibilitas Operasional & <br />
+                <span className="gold-gradient-text">Kepemimpinan Teruji.</span>
+              </>
+            ) : locale === 'en' ? (
+              <>
+                Operational Credibility & <br />
+                <span className="gold-gradient-text">Proven Leadership.</span>
+              </>
+            ) : (
+              <>
+                过硬的现场运营实力与 <br />
+                <span className="gold-gradient-text">经受考验的领导格局。</span>
+              </>
+            )}
           </h2>
 
-          <p className="text-lg text-platinum font-medium leading-relaxed pt-2">
+          <p className="text-base sm:text-lg text-softGray font-sans font-normal leading-relaxed">
             {t(data.profile.shortBio)}
           </p>
         </div>
 
-        {/* Narrative & Portrait Showcase */}
-        <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Dedicated Editorial Executive Portrait Card */}
-          <div className="lg:col-span-5 space-y-4">
-            <div className="relative rounded-2xl bg-graphite-surface border border-platinum/20 p-3 shadow-card-executive overflow-hidden group">
-              <div className="relative aspect-[4/5] w-full rounded-xl overflow-hidden bg-obsidian border border-platinum/10">
-                <Image
-                  src={portraitSrc}
-                  alt={data.profile.fullName}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 450px"
-                  className="object-cover object-top filter brightness-95 contrast-105 group-hover:scale-105 transition-transform duration-700"
-                />
-
-                {/* Subtle vignette and bottom gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/30 to-transparent pointer-events-none" />
-
-                {/* Top Badge */}
-                <div className="absolute top-3 left-3">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-obsidian/85 backdrop-blur-md border border-platinum/20 text-[10px] font-mono uppercase tracking-wider text-platinum">
-                    <span className="w-1.5 h-1.5 rounded-full bg-crimson animate-pulse" />
-                    <span>Verified Executive Leader</span>
-                  </span>
-                </div>
-
-                {/* Bottom Signature Overlay */}
-                <div className="absolute bottom-3 left-3 right-3 p-3.5 rounded-xl bg-graphite/90 backdrop-blur-md border border-platinum/15">
-                  <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
-                    {data.profile.fullName}, S.Ikom
-                  </h3>
-                  <p className="text-xs text-crimson font-mono mt-0.5">
-                    General Manager | Operations & Business Management
-                  </p>
-                  <p className="text-[11px] text-platinum-muted mt-1 font-mono">
-                    Bekasi, Jawa Barat, Indonesia
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Quick credentials micro-row */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-xl bg-obsidian-soft border border-platinum/10 flex items-center gap-2.5">
-                <ShieldCheck className="w-4 h-4 text-crimson shrink-0" />
-                <div className="text-[11px]">
-                  <span className="text-white font-semibold block">BNSP & LSP</span>
-                  <span className="text-platinum-muted font-mono block">Certified PR Officer</span>
-                </div>
+        {/* Bento Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          
+          {/* Bento Card 1: Narrative & Biography (Col 8) */}
+          <div className="lg:col-span-8 p-6 sm:p-8 rounded-2xl bg-charcoal border border-hairline shadow-luxury-card flex flex-col justify-between">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-hairline text-xs font-sans text-softGray">
+                <span className="text-gold font-bold tracking-wider uppercase">PROFESSIONAL SUMMARY</span>
+                <span className="font-mono">VERIFIED BY OFFICIAL CV</span>
               </div>
 
-              <div className="p-3 rounded-xl bg-obsidian-soft border border-platinum/10 flex items-center gap-2.5">
-                <Award className="w-4 h-4 text-crimson shrink-0" />
-                <div className="text-[11px]">
-                  <span className="text-white font-semibold block">TOEFL 533</span>
-                  <span className="text-platinum-muted font-mono block">CEFR B2 Level</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column: Detailed Biography Text & 4 Pillars */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="p-6 sm:p-8 rounded-2xl bg-graphite-surface border border-platinum/10 shadow-card-executive relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-1.5 h-full bg-crimson" />
-              <p className="whitespace-pre-line text-platinum text-base sm:text-lg leading-relaxed font-light">
-                {t(data.profile.fullBio)}
-              </p>
-            </div>
-
-            {/* 4 Pillars Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
-              {pillars.map((item, idx) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={idx}
-                    className="p-4 rounded-xl bg-obsidian-soft border border-platinum/10 hover:border-crimson/40 transition-all duration-300 group shadow-sm hover:shadow-card-executive"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="p-2 rounded-lg bg-graphite border border-platinum/15 text-crimson group-hover:bg-crimson group-hover:text-white transition-colors duration-300 shrink-0">
-                        <Icon className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h4 className="text-xs sm:text-sm font-semibold text-warmWhite tracking-tight">
-                          {item.title}
-                        </h4>
-                        <p className="text-[11px] sm:text-xs text-platinum-muted mt-1 leading-normal">
-                          {item.desc}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Verified CV Source Citation */}
-            <div className="flex items-center gap-2.5 text-xs text-platinum-muted font-mono px-2 pt-2">
-              <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>
+              <h3 className="text-xl sm:text-2xl font-serif font-bold text-ivory">
                 {locale === 'id'
-                  ? 'Berdasarkan rekam jejak resmi Curriculum Vitae Zefanya Zulian'
-                  : 'Grounded in the verified Curriculum Vitae of Zefanya Zulian'}
+                  ? 'Pengalaman Lintas Sektor & Tanggung Jawab Operasional'
+                  : locale === 'en'
+                  ? 'Cross-Sector Experience & Operational Scope'
+                  : '跨行业管理历练与全面运营统筹'}
+              </h3>
+
+              <div className="text-softGray text-sm sm:text-base leading-relaxed space-y-3 font-sans">
+                <p>{t(data.profile.fullBio)}</p>
+              </div>
+
+              {/* Career & Leadership Philosophy Callout */}
+              <div className="mt-4 p-4 rounded-xl bg-obsidian/70 border border-gold/30">
+                <span className="text-[10px] font-sans uppercase tracking-widest text-gold font-bold block mb-1">
+                  {locale === 'id' ? 'Filosofi Kepemimpinan' : locale === 'en' ? 'Leadership Philosophy' : '高管领导哲学'}
+                </span>
+                <blockquote className="text-xs sm:text-sm font-serif italic text-ivory/90 leading-relaxed">
+                  "{t(data.profile.leadershipPhilosophy)}"
+                </blockquote>
+              </div>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-hairline flex flex-wrap items-center justify-between gap-3 text-xs font-sans text-softGray">
+              <div className="flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-gold" />
+                <span>Zefanya Zulian, S.Ikom — Universitas Bhayangkara Jakarta Raya</span>
+              </div>
+              <span className="text-gold font-bold">
+                BEKASI · BANTEN · KALIMANTAN
               </span>
             </div>
           </div>
+
+          {/* Bento Card 2: Verified Key Credentials & Certifications (Col 4) */}
+          <div className="lg:col-span-4 p-6 sm:p-8 rounded-2xl bg-charcoal border border-hairline shadow-luxury-card flex flex-col justify-between space-y-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-hairline text-xs font-sans text-softGray">
+                <span className="text-gold font-bold tracking-wider uppercase">VERIFIED CREDENTIALS</span>
+                <span>4 CERTIFICATIONS</span>
+              </div>
+
+              <div className="space-y-3 font-sans">
+                {/* Degree Badge */}
+                <div className="p-3.5 rounded-xl bg-obsidian border border-hairline flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <GraduationCap className="w-5 h-5 text-gold shrink-0" />
+                    <div>
+                      <span className="text-xs font-bold text-ivory block">S.Ikom (Ilmu Komunikasi)</span>
+                      <span className="text-[10px] text-softGray block">Universitas Bhayangkara (2024)</span>
+                    </div>
+                  </div>
+                  <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-gold/15 text-gold border border-gold/30 shrink-0">
+                    GPA 3.25
+                  </span>
+                </div>
+
+                {/* PR Officer LSP Ubhara */}
+                <div className="p-3.5 rounded-xl bg-obsidian border border-hairline flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <ShieldCheck className="w-5 h-5 text-gold shrink-0" />
+                    <div>
+                      <span className="text-xs font-bold text-ivory block">Certified PR Officer</span>
+                      <span className="text-[10px] text-softGray block">LSP Ubhara Jaya (2024)</span>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gold/10 text-gold border border-gold/30 shrink-0">
+                    LSP / BNSP
+                  </span>
+                </div>
+
+                {/* TOEFL CEFR B2 */}
+                <div className="p-3.5 rounded-xl bg-obsidian border border-hairline flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Award className="w-5 h-5 text-gold shrink-0" />
+                    <div>
+                      <span className="text-xs font-bold text-ivory block">TOEFL Score 533</span>
+                      <span className="text-[10px] text-softGray block">CEFR B2 Upper Intermediate (2023)</span>
+                    </div>
+                  </div>
+                  <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-gold/15 text-gold border border-gold/30 shrink-0">
+                    B2
+                  </span>
+                </div>
+
+                {/* COVID-19 1,100 Doses Milestones */}
+                <div className="p-3.5 rounded-xl bg-obsidian border border-hairline">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-ivory">COVID-19 Vaccination Drive</span>
+                    <span className="text-xs font-bold text-gold">1,100 DOSES</span>
+                  </div>
+                  <p className="text-[10px] text-softGray mt-1">
+                    Kolaborasi Kapolri & BEM Universitas Bhayangkara Jakarta Raya (2021).
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-2 text-[10px] font-sans text-softGray text-center border-t border-hairline/60">
+              {locale === 'id'
+                ? 'Seluruh data disinkronkan dengan CV resmi'
+                : locale === 'en'
+                ? 'All credentials verified against official records'
+                : '全部履历信息均与官方档案核验一致'}
+            </div>
+          </div>
+
+          {/* 4 Systems Cards (Grid across 12 columns) */}
+          <div className="lg:col-span-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+            {pillars.map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={idx}
+                  onMouseEnter={() => sound.playHover()}
+                  onClick={() => sound.playClick()}
+                  className="p-6 rounded-2xl bg-charcoal border border-hairline hover:border-gold/60 transition-all duration-300 group cursor-pointer shadow-luxury-card hover:shadow-gold-subtle"
+                >
+                  <div className="flex items-center justify-between pb-2 mb-3 border-b border-hairline text-xs font-sans text-softGray">
+                    <span className="text-gold font-bold">{item.code}</span>
+                    <span className="text-[9px] uppercase tracking-wider">{item.tag}</span>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-obsidian border border-hairline text-gold group-hover:bg-gold group-hover:text-obsidian transition-colors duration-300 w-fit mb-3">
+                    <Icon className="w-5 h-5" />
+                  </div>
+
+                  <h4 className="text-base font-serif font-bold text-ivory tracking-tight group-hover:text-gold transition-colors">
+                    {item.title[locale] || item.title.id}
+                  </h4>
+
+                  <p className="text-xs text-softGray mt-2 leading-relaxed font-sans">
+                    {item.desc[locale] || item.desc.id}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+
         </div>
       </div>
     </section>

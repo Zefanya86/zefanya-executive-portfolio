@@ -13,7 +13,7 @@ function ensureDataDir() {
 
 export async function POST(request: Request) {
   try {
-    const { name, email, subject, message } = await request.json();
+    const { name, email, organization, category, message } = await request.json();
 
     if (!name || !email || !message) {
       return NextResponse.json(
@@ -47,18 +47,50 @@ export async function POST(request: Request) {
       id: `inq-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
       name: String(name).trim().slice(0, 100),
       email: String(email).trim().slice(0, 120),
-      subject: String(subject || 'General Inquiry').trim().slice(0, 150),
+      organization: String(organization || '').trim().slice(0, 150),
+      category: ['career', 'partnership', 'collaboration', 'project', 'general'].includes(category)
+        ? category
+        : 'partnership',
       message: String(message).trim().slice(0, 3000),
       receivedAt: new Date().toISOString(),
+      status: 'new', // 'new' | 'read' | 'replied' | 'archived'
       read: false,
     };
 
     existingInquiries.unshift(newInquiry);
 
-    // Save atomically
+    // Save locally
     const tempFile = `${MESSAGES_FILE}.tmp`;
     fs.writeFileSync(tempFile, JSON.stringify(existingInquiries, null, 2), 'utf-8');
     fs.renameSync(tempFile, MESSAGES_FILE);
+
+    // If Supabase configured, sync to contact_submissions table
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (supabaseUrl && supabaseKey) {
+      try {
+        await fetch(`${supabaseUrl}/rest/v1/contact_submissions`, {
+          method: 'POST',
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: newInquiry.name,
+            email: newInquiry.email,
+            organization: newInquiry.organization,
+            category: newInquiry.category,
+            message: newInquiry.message,
+            received_at: newInquiry.receivedAt,
+            status: newInquiry.status,
+          }),
+        });
+      } catch (sbErr) {
+        console.warn('Supabase inquiry sync warning:', sbErr);
+      }
+    }
 
     return NextResponse.json({
       success: true,

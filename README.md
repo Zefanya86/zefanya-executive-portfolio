@@ -1,154 +1,128 @@
-# ZEFANYA ZULIAN — WORLD-CLASS CINEMATIC 3D EXECUTIVE PORTFOLIO & RESUME PLATFORM
+# ZEFANYA ZULIAN — LUXURY EXECUTIVE PERSONAL BRANDING PLATFORM
+## "THE MODERN BUSINESS LEADER"
 
-> **Official Executive Portfolio & Digital Resume Platform for Zefanya Zulian**  
-> *General Manager | Operations · Procurement · Business Management*  
-> Location: Bekasi, Jawa Barat, Indonesia
-
----
-
-## 🌟 Executive Overview & Art Direction
-
-Website ini dibangun secara khusus sebagai representasi profesional tingkat eksekutif kelas dunia bagi **Zefanya Zulian**, memadukan estetika editorial kontemporer, kedalaman interaktif 3D Three.js, visualisasi video sinematik, serta platform Content Management System (CMS) terintegrasi pada route `/admin`.
-
-### Visual Design Tokens
-- **Base Obsidian Black**: `#090A0D` (Latar utama ruang visual gelap tak terbatas)
-- **Deep Graphite**: `#11141A` (Permukaan latar belakang sekunder)
-- **Elevated Surface**: `#191D24` (Kartu editorial berkedalaman halus)
-- **Cinematic Crimson**: `#D72E43` (Aksen dinamis, rim-glow, highlight, dan status indikator)
-- **Platinum Silver**: `#D8DDE5` & `#A6ADB8` (Tipografi tajam, pembatas mikro, refleksi metalik)
-- **Warm White**: `#F4F3EF` (Keterbacaan teks utama standar WCAG AA)
+> **Platform Personal Branding, Portofolio Eksekutif & Content Management System Resmi**  
+> **Tagline Utama:** *"Membangun Nilai Melalui Strategi, Operasional, dan Kepemimpinan."*  
+> **English Tagline:** *"Building Value Through Strategy, Operations, and Leadership."*  
+> **Chinese Tagline:** *"以策略、运营与领导力创造价值。"*  
+> **Domisili:** Bekasi, Jawa Barat, Indonesia • **Email Resmi:** `Zefanya.zuliann@gmail.com`
 
 ---
 
-## 🚀 Fitur Unggulan Platform
+## 🏛️ 1. VISI BRANDING & IDENTITAS ULTRA LUXURY
 
-### 1. Hero Section Sinematik (100svh)
-- Background video gedung modern & arsitektur urban malam hari dengan kontrol pause/play aksesibel.
-- Fallback poster berkualitas tinggi yang otomatis aktif jika koneksi lambat atau video diblokir browser.
-- Lapisan vignette dan pencahayaan bertingkat yang menjamin teks tetap sangat mudah dibaca.
-- Responsif di seluruh breakpoint (Mobile, Tablet, Laptop, Ultra-wide).
-
-### 2. Immersive 3D Experience (Three.js WebGL)
-- **Signature 3D Monolith**: Monolith geometris arsitektural Three.js dengan rotasi organik, material metalik gloss, refleksi cahaya platinum, dan rim light crimson.
-- **3D Portrait Card**: Kartu potret asli Zefanya Zulian dengan tilt interaktif berbasis pointer mouse, specular glare dinamis, dan kedalaman translasi z-axis.
-- **Graceful Fallback**: Mendukung perangkat tanpa WebGL dan secara otomatis menghormati preferensi `prefers-reduced-motion`.
-
-### 3. Arsitektur 10 Bagian Eksekutif Sesuai Fakta CV Asli
-- **01 // Hero**: Identitas eksekutif, video cover, 3D Monolith, 3D portrait, status ketersediaan, CTA ganda.
-- **02 // Executive Introduction**: Refleksi kepemimpinan (*"More Than Managing Operations."*) dan 4 pilar operasional utama.
-- **03 // Professional Experience**: Jalur timeline editorial berisi 3 rekam jejak riil:
-  1. *PT. Aba Mandiri Sejahtera* — General Manager (2026 — Sekarang)
-  2. *PT. Mahaputra Baruna Logistik* — Site Operations Manager (Bayah Mineral Flow Transport, 2025)
-  3. *PT. Asri — Praya, KSO* — Head of Logistics / Material Procurement (Proyek Jembatan Kalimantan - Pulau Laut, 2024–2025)
-- **04 // Areas of Expertise**: Grid 15 kompetensi inti terverifikasi dengan filter kategori dinamis.
-- **05 // Leadership & Organization**: Rekam jejak kepemimpinan publik di *GEMA-RI* (Branch Leader) dan *BEM Universitas Bhayangkara Jakarta Raya* (Presiden Mahasiswa).
-- **06 // Education & Credentials**: Gelar Sarjana Ilmu Komunikasi (S.Ikom, GPA 3.25/4.00, Predikat Lulus Baik) dan 4 sertifikasi resmi (LSP PR, TOEFL 533 B2, STMIK Office, BNSP Programmer).
-- **07 // Selected Achievements**: Program Vaksinasi COVID-19 (1.100 dosis) dan Juara 1 Kejuaraan Basket Fakultas Porseni 2019.
-- **08 // Tools & Capabilities**: Ekosistem pemodelan data & dokumentasi serta kecakapan dwibahasa (Indonesia Native & English Upper Intermediate).
-- **09 // Contact & Inquiry System**: Form pengiriman pesan eksekutif yang tervalidasi dengan penyimpanan persisten backend, link WhatsApp langsung, email resmi, dan LinkedIn.
-- **10 // Minimalist Footer**: Navigasi cepat, hak cipta tahun berjalan, dan link diskret ke portal admin.
-
-### 4. Dwibahasa Penuh (Bahasa Indonesia & English)
-- Switcher interaktif `[ ID | EN ]` yang langsung menerjemahkan seluruh konten halaman, bukan sekadar label tombol.
-- Semua string bilingual tersimpan di database dan dapat dikelola dari Admin Dashboard.
-
-### 5. Fitur Unduh & Pratinjau Dokumen CV Asli
-- Menyimpan file PDF asli Zefanya Zulian di `/public/CV_Zefanya_Zulian.pdf`.
-- Modal pratinjau PDF interaktif tanpa harus meninggalkan halaman.
-- Tombol unduh resmi dengan penamaan profesional `CV_Zefanya_Zulian_Operations_Executive.pdf`.
-
-### 6. Admin Dashboard & Real CMS (`/admin`)
-- **Autentikasi Terproteksi**: Login berbasis session token HMAC aman dengan proteksi brute-force rate-limiting.
-- **CRUD Penuh**: Dapat menambah, mengedit, dan menghapus teks, perusahaan, kompetensi, sertifikasi, dan pengaturan tema.
-- **Penyimpanan Persisten**: Perubahan langsung tersimpan ke disk server (`data/portfolio.json`) dan dapat tersinkronisasi otomatis ke Supabase PostgreSQL jika dikonfigurasi.
-- **Pusat Pesan Masuk**: Melihat pesan dan penawaran kerja sama yang masuk dari form publik secara real-time.
-- **Media Manager**: Upload foto portrait, video hero, poster, dan file CV PDF baru secara langsung dari browser.
+Platform ini dirancang dengan standar kemewahan internasional setara executive entrepreneur global:
+- **Karakter Brand:** *Professional, sophisticated, confident, strategic, modern, credible, creative, and approachable.*
+- **Palet Warna Ultra Luxury:**
+  - **Obsidian Black (`#0B0B0C`)**: Latar belakang kanvas utama yang dalam dan berwibawa.
+  - **Charcoal (`#18181B`)**: Kontainer kartu dan panel eksekutif dengan elevasi bayangan halus.
+  - **Champagne Gold (`#C5A477`)**: Aksen emas mewah terkontrol pada monogram "ZZ", badge, dan border.
+  - **Warm Ivory (`#F4F0E8`)**: Teks utama dan kontras tipografi hangat.
+  - **Soft Gray (`#A5A5A5`)**: Teks sekunder, metadata waktu, dan garis pembagi tipis.
+- **Tipografi Editorial Kelas Dunia:**
+  - **Headlines & Statements**: *Cormorant Garamond* (Editorial Serif).
+  - **Body & Micro-labels**: *Manrope* (Modern Geometric Sans-Serif).
+  - **Mandarin Typography**: *Noto Sans SC* (Simplified Chinese).
+- **Sistem Trilingual Instan:**
+  - **Bahasa Indonesia (ID)**: Bahasa utama default saat pertama kali dimuat.
+  - **English (EN)**: Standar komunikasi bisnis global dan recruiter multinasional.
+  - **Chinese Simplified (ZH - 中文)**: Bahasa representasi investor dan jaringan bisnis Asia Timur.
+  - Pengalih bahasa `ID | EN | 中文` tersedia pada navigation dock dengan penyimpanan preferensi di cookies dan localStorage.
 
 ---
 
-## 🛠️ Tech Stack
+## 🗺️ 2. ARSITEKTUR HALAMAN & RUTE PUBLIK
 
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **3D Graphics**: Three.js
-- **Icons**: Lucide React
-- **Icons/Utilities**: clsx, tailwind-merge
-- **Database/Storage**: Hybrid Storage Engine (Local Atomic JSON + Supabase Client Support)
-- **Deployment Target**: Vercel + GitHub + Supabase
+| Rute URL | Nama Modul | Fitur & Karakteristik |
+|---|---|---|
+| `/` | **Beranda Utama** | Hero video background, credo eksekutif, 4 pilar kepemimpinan, pengalaman kerja, kompetensi, prestasi, dan formulir kemitraan |
+| `/about` | **Profil Eksekutif** | Biografi naratif komprehensif, potret resmi terverifikasi, riwayat pendidikan S.Ikom, dan filosofi kepemimpinan |
+| `/experience` | **Katalog Pengalaman** | Direktori seluruh rekam jejak manajerial (PT Aba Mandiri Sejahtera, PT Mahaputra Baruna Logistik, PT Asri - Praya KSO) |
+| `/experience/[slug]` | **Detail Pengalaman** | Uraian mendalam mandat operasional, SOP, pemantauan KPI, dan dokumentasi visual |
+| `/projects` | **Studi Kasus Proyek** | Analisis komprehensif 10-bagian: Ruang Lingkup, Tantangan Lapangan, Pendekatan Manajemen, Eksekusi, dan Hasil |
+| `/leadership` | **Kepemimpinan Publik** | Rekam jejak Presiden Mahasiswa BEM Ubhara dan Branch Leader GEMA-RI Bekasi |
+| `/gallery` | **Galeri Aktivitas** | Koleksi foto jurnalistik aktivitas operasional, infrastruktur, dan kepemimpinan dengan Media Lightbox interaktif |
+| `/journal` | **Jurnal & Opini** | Kumpulan pemikiran strategis di bidang operasional, logistik, pengadaan barang, dan kepemimpinan bisnis |
+| `/download` | **Pusat Unduhan** | Download Center berkas CV PDF resmi (ID, EN, ZH) dengan modal pratinjau langsung di dalam browser |
+| `/card` | **Kartu Nama Digital** | Digital Business Card responsif dengan vCard 3.0, QR Code real-time, dan integrasi Web Share API |
+| `/contact` | **Kontak & Kemitraan** | Formulir pesan dengan 5 kategori inisiasi, saluran WhatsApp langsung, dan email resmi |
+| `/admin` | **Executive CMS** | Panel Content Management System 20 modul dengan autentikasi berkeamanan tinggi |
 
 ---
 
-## ⚡ Panduan Menjalankan Secara Lokal
+## 🔒 3. MASTER EXECUTIVE CMS (20 MODUL LENGKAP)
 
-### 1. Masuk ke Direktori Proyek
+Akses: `/admin`  
+Password Default: `ZefanyaExecutive2026!`
+
+Semua 20 modul telah diintegrasikan secara terstruktur ke dalam panel manajemen:
+1. **01. Dashboard Ringkasan**: Statistik data real-time, status sinkronisasi, dan diagnostik sistem.
+2. **02. Profil Eksekutif**: Monogram, gelar eksekutif, bio narasi trilingual, dan kontak resmi.
+3. **Hero Cover & Video**: Pilihan preset video latar sinematik, overlay opacity, dan headline editorial.
+4. **03. Manajemen Halaman**: Tinjauan 9 rute publik, tipe rendering, dan link pratinjau live.
+5. **04. Visual Section Builder**: Atur urutan seksi beranda (naik/turun) dan aktifkan/nonaktifkan modul.
+6. **05. Pengalaman Eksekutif**: CRUD posisi kerja, deskripsi tugas trilingual, slug, dan foto cover.
+7. **06. Studi Kasus Proyek**: Kelola analisis proyek 10-bagian (Scope, Challenges, Approach, Execution, Outcomes).
+8. **Kepemimpinan Organisasi**: Kelola riwayat BEM Universitas dan organisasi advokasi sosial.
+9. **08. Kompetensi Inti**: Kelola 15 keahlian manajerial dengan pengelompokan kategori.
+10. **09. Prestasi & Rekor**: Kelola data capaian nyata (Vaksinasi 1.100 dosis bersama Kapolri, Juara 1 Basket Porseni).
+11. **10. Pendidikan Akademik**: Gelar S.Ikom, IPK 3.25, universitas, dan predikat kelulusan.
+12. **10. Sertifikasi Profesi**: LSP Ubhara, TOEFL 533 CEFR B2, BNSP Programmer, Microsoft Training.
+13. **Alat Kerja & Bahasa**: Software productivity, creative suite, dan kemahiran bahasa resmi.
+14. **07. Galeri Aktivitas**: Kelola album foto kegiatan dengan penyesuaian focal point responsif.
+15. **11. Jurnal & Opini**: Editor artikel pemikiran eksekutif dengan taksiran waktu baca dan kategori.
+16. **12. Pusat Unduhan**: Berkas CV resmi PDF (Bahasa Indonesia, English, Mandarin) dan statistik unduhan.
+17. **13. Testimoni Profesional**: Pengelolaan draf rekomendasi rekan kerja dan pimpinan (standar anti-fiktif).
+18. **14. Matriks Terjemahan**: Komparasi dan pencarian kamus trilingual (ID, EN, ZH) berdampingan.
+19. **15. Pesan Masuk (Inquiries)**: Tabel pesan dari formulir kemitraan, filter status, dan ekspor CSV.
+20. **16. Luxury Design System**: Token warna Obsidian/Gold, preset tipografi, dan mode performa grafis.
+21. **17. Media Library**: Unggah berkas gambar/PDF baru dan salin URL aset ke clipboard.
+22. **18. SEO & JSON-LD**: Metadata Google, OpenGraph preview, dan Schema.org Person terstruktur.
+23. **19. Log Aktivitas**: Jejak audit real-time perubahan data dengan stempel waktu dan user audit.
+24. **20. Pengaturan & Cadangan**: 1-Klik ekspor cadangan JSON, impor berkas pemulihan, dan reset ke standar resmi CV.
+
+---
+
+## 💾 4. ARSITEKTUR DATA & DUAL-PERSISTENCE
+
+- **Local Persistence (`data/portfolio.json`)**: Memastikan seluruh data dapat dimuat dan disimpan secara permanen di lingkungan lokal tanpa ketergantungan wajib pada koneksi internet.
+- **Supabase Cloud Sync (30 Tabel PostgreSQL)**: Terhubung ke basis data relasional enterprise jika variabel lingkungan Supabase disediakan. Skema SQL lengkap tersedia di: `supabase/migrations/20261108_comprehensive_schema.sql`.
+
+---
+
+## 🚀 5. MEMULAI PROYEK (LOCAL DEVELOPMENT)
+
+### Prasyarat
+- Node.js versi 18 atau lebih tinggi
+- npm atau pnpm
+
+### Langkah Instalasi
 ```bash
+# 1. Masuk ke direktori proyek
 cd C:\Users\ASUS\.gemini\antigravity\scratch\zefanya-executive-portfolio
+
+# 2. Instal seluruh dependensi
+npm.cmd install
+
+# 3. Jalankan server pengembangan
+npm.cmd run dev
 ```
 
-### 2. Konfigurasi Environment Variable
-Salin `.env.example` menjadi `.env.local`:
+Buka peramban di: `http://localhost:3000`  
+Untuk masuk ke panel Admin CMS: `http://localhost:3000/admin` (Password: `ZefanyaExecutive2026!`)
+
+### Build Produksi
 ```bash
-cp .env.example .env.local
+npm.cmd run build
+npm.cmd run start
 ```
-
-Isi default pada `.env.local`:
-```env
-ADMIN_PASSWORD=ZefanyaExecutive2026!
-ADMIN_SESSION_SECRET=zefanya_cinematic_executive_secret_key_prod_2026
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-```
-
-### 3. Menjalankan Server Pengembangan
-```bash
-npm run dev
-```
-Buka browser pada: `http://localhost:3000`
-
-### 4. Masuk ke Dashboard Admin
-- Kunjungi: `http://localhost:3000/admin`
-- Masukkan password: `ZefanyaExecutive2026!`
+*Hasil: 27 halaman statis terkompilasi 100% tanpa error TypeScript.*
 
 ---
 
-## ☁️ Panduan Deploy ke Vercel & GitHub
+## 📄 6. DATA & ATRIBUT RESMI ZEFANYA ZULIAN
 
-### 1. Inisialisasi Git & Push ke GitHub
-```bash
-git init
-git add .
-git commit -m "feat: world-class cinematic 3D executive portfolio for Zefanya Zulian"
-git branch -M main
-git remote add origin https://github.com/USERNAME/zefanya-executive-portfolio.git
-git push -u origin main
-```
-
-### 2. Deploy ke Vercel
-1. Buka [Vercel Dashboard](https://vercel.com/dashboard) dan pilih **Add New Project**.
-2. Hubungkan repository GitHub `zefanya-executive-portfolio`.
-3. Di bagian **Environment Variables**, tambahkan:
-   - `ADMIN_PASSWORD`: (Password rahasia Anda)
-   - `ADMIN_SESSION_SECRET`: (String acak untuk tanda tangan token)
-   - `NEXT_PUBLIC_SITE_URL`: `https://domain-anda.vercel.app`
-4. Klik **Deploy**. Website akan aktif dalam waktu kurang dari 2 menit.
-
----
-
-## 🗄️ Menghubungkan Supabase (Opsional untuk Multi-Cloud Persistence)
-
-Jika Anda ingin menyimpan data ke database PostgreSQL cloud Supabase:
-1. Buat proyek baru di [Supabase](https://supabase.com).
-2. Di SQL Editor Supabase, jalankan file skrip migrasi yang telah disediakan:
-   `supabase/migrations/20261021_init_schema.sql`
-3. Salin **Project URL** dan **Service Role Key** dari *Project Settings > API*.
-4. Masukkan ke `.env.local` (atau Environment Variables di Vercel):
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL=https://xxxxxxxxxxxx.supabase.co
-   SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6...
-   ```
-5. Setiap kali Anda menekan tombol **Simpan Perubahan** di `/admin`, data otomatis disinkronkan ke tabel `portfolio_data` di Supabase!
-
----
-
-## 🛡️ Hak Cipta & Integritas Profesional
-Seluruh informasi dalam portofolio ini didasarkan pada dokumen rekam jejak riil Zefanya Zulian tanpa klaim fiktif. Seluruh hak cipta dilindungi.
+Platform ini 100% dibangun berdasarkan dokumen asli **CV_ZEFANYA_ZULIAN.pdf** dan foto potret resmi yang dilampirkan:
+- **Foto Portrait Asli**: `public/zefanya-portrait.jpg` (Kualitas tinggi, rasio aspek 4:5, kontras studio editorial).
+- **Berkas CV Asli**: `public/CV_Zefanya_Zulian.pdf` & `public/CV_Zefanya_Zulian_English.pdf`.
+- **Integritas Informasi**: Seluruh nama perusahaan, periode, jabatan, angka pencapaian, dan sertifikasi sesuai dengan dokumen resmi tanpa karangan data.

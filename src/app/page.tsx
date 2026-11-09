@@ -1,59 +1,79 @@
 import Navigation from '@/components/ui/Navigation';
 import HeroSection from '@/components/sections/HeroSection';
+import MarqueeTicker from '@/components/ui/MarqueeTicker';
 import ExecutiveIntro from '@/components/sections/ExecutiveIntro';
-import OperationsNetworkSection from '@/components/sections/OperationsNetworkSection';
 import ExperienceSection from '@/components/sections/ExperienceSection';
 import CompetenciesSection from '@/components/sections/CompetenciesSection';
 import LeadershipSection from '@/components/sections/LeadershipSection';
 import EducationSection from '@/components/sections/EducationSection';
 import AchievementsSection from '@/components/sections/AchievementsSection';
+import CivicMentorshipSection from '@/components/sections/CivicMentorshipSection';
+import ExecutiveBookshelf from '@/components/sections/ExecutiveBookshelf';
 import ToolsSection from '@/components/sections/ToolsSection';
 import ContactSection from '@/components/sections/ContactSection';
 import Footer from '@/components/sections/Footer';
+import MediaLightbox from '@/components/ui/MediaLightbox';
+import CommandPalette from '@/components/ui/CommandPalette';
+import CursorGlow from '@/components/ui/CursorGlow';
 
 export const revalidate = 60;
 
 export default function HomePage() {
   return (
-    <div className="relative min-h-screen bg-obsidian text-warmWhite overflow-x-hidden">
-      {/* Top Fixed Executive Header */}
+    <div className="relative min-h-screen bg-obsidian text-ivory overflow-x-hidden selection:bg-gold selection:text-obsidian transition-colors duration-300">
+      {/* Subtle cursor ambient glow */}
+      <CursorGlow />
+
+      {/* Floating Ultra Luxury Dock Navigation */}
       <Navigation />
 
-      {/* Main Content Flow */}
+      {/* Main Luxury Content Flow */}
       <main id="main-content" className="relative z-10">
-        {/* Section 01: Hero with Jakarta Traffic Cinematic Cover */}
+        {/* 01. Hero with Cinematic Backdrop & Zefanya Zulian Portrait */}
         <HeroSection />
 
-        {/* Section 02: Executive Introduction & Verified Portrait */}
+        {/* 02. Running Champagne Gold Ticker */}
+        <MarqueeTicker />
+
+        {/* 03. Executive Credo, Summary & Core Pillars */}
         <ExecutiveIntro />
 
-        {/* Section 03: 3D Tactical Operations & Logistics Grid (Google Earth Satellite 3D) */}
-        <OperationsNetworkSection />
-
-        {/* Section 04: Professional Experience */}
+        {/* 04. Professional Experience */}
         <ExperienceSection />
 
-        {/* Section 05: Areas of Expertise */}
+        {/* 05. Core Functional Expertise */}
         <CompetenciesSection />
 
-        {/* Section 06: Leadership & Organization */}
+        {/* 06. Strategic Leadership & Organizations */}
         <LeadershipSection />
 
-        {/* Section 07: Education & Credentials */}
+        {/* 07. Education & Official Certifications */}
         <EducationSection />
 
-        {/* Section 08: Selected Achievements */}
+        {/* 08. Selected Achievements & Social Impact */}
         <AchievementsSection />
 
-        {/* Section 09: Tools & Capabilities */}
+        {/* 09. Civic Legacy & Youth Mentorship (Locked Point 5) */}
+        <CivicMentorshipSection />
+
+        {/* 10. The Executive Bookshelf & Intellectual Sources (Locked Point 2) */}
+        <ExecutiveBookshelf />
+
+        {/* 11. Productivity Suite & Language Fluency */}
         <ToolsSection />
 
-        {/* Section 10: Contact & Direct Channels */}
+        {/* 10. Direct Strategic Intake & Contact */}
         <ContactSection />
       </main>
 
-      {/* Footer */}
+      {/* Ultra Luxury Footer with Monogram & Links */}
       <Footer />
+
+      {/* Interactive Fullscreen Media Lightbox */}
+      <MediaLightbox />
+
+      {/* Global Command Palette (Cmd+K / Ctrl+K) */}
+      <CommandPalette />
     </div>
   );
 }

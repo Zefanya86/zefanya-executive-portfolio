@@ -2,26 +2,54 @@
 
 import React, { useState } from 'react';
 import { usePortfolio } from '@/context/PortfolioContext';
-import { Mail, Phone, MessageSquare, Linkedin, Download, Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import {
+  Mail,
+  MessageSquare,
+  Linkedin,
+  Download,
+  Send,
+  CheckCircle2,
+  AlertCircle,
+  ShieldCheck,
+  Building2,
+  Phone,
+  Briefcase,
+} from 'lucide-react';
+import { sound } from '@/lib/sound';
 
 export default function ContactSection() {
   const { data, locale, t, setIsCvModalOpen } = usePortfolio();
 
-  // Form state
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    subject: '',
+    organization: '',
+    category: 'partnership',
     message: '',
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
+  const inquiryCategories = [
+    { id: 'career', label: { id: 'Peluang Karier & Rekrutmen', en: 'Career Opportunity', zh: '高管招募与职业机会' } },
+    { id: 'partnership', label: { id: 'Kemitraan Bisnis Eksekutif', en: 'Business Partnership', zh: '企业战略商务合作' } },
+    { id: 'collaboration', label: { id: 'Kolaborasi Profesional', en: 'Professional Collaboration', zh: '跨专业项目协同' } },
+    { id: 'project', label: { id: 'Konsultasi / Pengelolaan Proyek', en: 'Project Management Inquiry', zh: '工程管理咨询业务' } },
+    { id: 'general', label: { id: 'Kontak Umum', en: 'General Inquiry', zh: '其他综合事务接洽' } },
+  ];
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) {
+      sound.playClick();
       setStatus('error');
-      setErrorMessage(locale === 'id' ? 'Mohon lengkapi semua kolom wajib.' : 'Please fill in all required fields.');
+      setErrorMessage(
+        locale === 'id'
+          ? 'Mohon lengkapi semua kolom wajib (Nama, Email, dan Pesan).'
+          : locale === 'en'
+          ? 'Please complete all required fields (Name, Email, and Message).'
+          : '请填写所有必填字段（姓名、电子邮箱及留言内容）。'
+      );
       return;
     }
 
@@ -37,202 +65,259 @@ export default function ContactSection() {
 
       const resJson = await res.json();
       if (res.ok && resJson.success) {
+        sound.playSuccess();
         setStatus('success');
-        setFormData({ name: '', email: '', subject: '', message: '' });
+        setFormData({ name: '', email: '', organization: '', category: 'partnership', message: '' });
       } else {
+        sound.playClick();
         setStatus('error');
-        setErrorMessage(resJson.error || (locale === 'id' ? 'Gagal mengirim pesan.' : 'Failed to send inquiry.'));
+        setErrorMessage(
+          resJson.error ||
+            (locale === 'id'
+              ? 'Gagal mengirim pesan ke server.'
+              : locale === 'en'
+              ? 'Failed to send inquiry.'
+              : '留言发送失败，请稍后重试。')
+        );
       }
     } catch {
+      sound.playClick();
       setStatus('error');
-      setErrorMessage(locale === 'id' ? 'Terjadi kesalahan jaringan.' : 'Network error. Please try again.');
+      setErrorMessage(
+        locale === 'id'
+          ? 'Terjadi kendala jaringan saat pengiriman.'
+          : locale === 'en'
+          ? 'Network error. Please try again.'
+          : '网络连接异常，请重试。'
+      );
     }
   };
 
   const email = data.contact.email || 'Zefanya.zuliann@gmail.com';
-  const phone = data.contact.phone || '+62 896 8185 2453';
+  const phone = data.contact.phone || '(+62) 896 8185 2453';
   const rawWa = data.contact.whatsapp?.replace(/[^0-9]/g, '') || '6289681852453';
   const waUrl = `https://wa.me/${rawWa}?text=Halo%20Zefanya%2C%20saya%20tertarik%20untuk%20berdiskusi%20mengenai%20peluang%20kerja%20sama.`;
   const linkedinUrl = data.contact.linkedinUrl || 'https://www.linkedin.com/in/zefanya-zulian';
 
   return (
-    <section id="contact" className="relative py-28 bg-obsidian border-t border-platinum/10 overflow-hidden">
-      {/* Cinematic Ambient Lighting */}
-      <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-crimson/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-platinum/5 rounded-full blur-3xl pointer-events-none" />
-
+    <section id="contact" className="relative py-28 bg-obsidian border-t border-hairline overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          {/* Left Column: Executive Closing Statement & Direct Channels */}
+          
+          {/* Left Column: Direct Channels & Statement (5 Cols) */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="inline-flex items-center gap-2 text-xs font-mono text-crimson tracking-widest uppercase">
-              <span className="w-6 h-px bg-crimson" />
-              <span>09 // {locale === 'id' ? 'HUBUNGI SAYA' : 'GET IN TOUCH'}</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-charcoal border border-gold/30 text-[10px] sm:text-xs font-sans text-gold tracking-widest uppercase font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
+              <span>08 // DIRECT STRATEGIC DIALOGUE</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-warmWhite leading-[1.1]">
+            <h2 className="text-3xl sm:text-5xl font-serif font-bold tracking-tight text-ivory leading-tight">
               {t(data.contact.headline)}
             </h2>
 
-            <p className="text-base sm:text-lg text-platinum-muted leading-relaxed font-normal">
+            <p className="text-base sm:text-lg text-softGray leading-relaxed font-sans font-normal">
               {t(data.contact.subheadline)}
             </p>
 
-            {/* Direct Connect Buttons Grid */}
-            <div className="pt-4 space-y-3">
-              {/* Email Button */}
+            {/* Direct Connect Channels */}
+            <div className="pt-2 space-y-3 font-sans">
+              {/* Email */}
               <a
                 href={`mailto:${email}`}
-                className="flex items-center gap-4 p-4 rounded-xl bg-graphite-surface border border-platinum/10 hover:border-crimson/50 hover:bg-graphite transition-all group"
+                onMouseEnter={() => sound.playHover()}
+                onClick={() => sound.playClick()}
+                className="flex items-center gap-4 p-4 rounded-xl bg-charcoal border border-hairline hover:border-gold/50 transition-all duration-300 group shadow-luxury-card hover:-translate-y-0.5"
               >
-                <div className="p-3 rounded-lg bg-obsidian border border-platinum/10 text-crimson group-hover:scale-110 transition-transform">
+                <div className="p-3 rounded-lg bg-obsidian border border-hairline text-gold group-hover:bg-gold group-hover:text-obsidian transition-colors">
                   <Mail className="w-5 h-5" />
                 </div>
                 <div className="overflow-hidden">
-                  <span className="text-[11px] font-mono text-platinum-muted uppercase block">
-                    Email Resmi
+                  <span className="text-[10px] text-softGray uppercase tracking-widest block font-bold">
+                    Official Executive Email
                   </span>
-                  <span className="text-sm font-semibold text-warmWhite truncate block">
+                  <span className="text-sm font-bold text-ivory truncate block group-hover:text-gold transition-colors">
                     {email}
                   </span>
                 </div>
               </a>
 
-              {/* WhatsApp Button */}
+              {/* WhatsApp Direct */}
               <a
                 href={waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 p-4 rounded-xl bg-graphite-surface border border-platinum/10 hover:border-emerald-500/50 hover:bg-graphite transition-all group"
+                onMouseEnter={() => sound.playHover()}
+                onClick={() => sound.playClick()}
+                className="flex items-center gap-4 p-4 rounded-xl bg-charcoal border border-hairline hover:border-gold/50 transition-all duration-300 group shadow-luxury-card hover:-translate-y-0.5"
               >
-                <div className="p-3 rounded-lg bg-obsidian border border-platinum/10 text-emerald-400 group-hover:scale-110 transition-transform">
+                <div className="p-3 rounded-lg bg-obsidian border border-hairline text-gold group-hover:bg-gold group-hover:text-obsidian transition-colors">
                   <MessageSquare className="w-5 h-5" />
                 </div>
-                <div>
-                  <span className="text-[11px] font-mono text-platinum-muted uppercase block">
-                    WhatsApp Direct
+                <div className="overflow-hidden">
+                  <span className="text-[10px] text-softGray uppercase tracking-widest block font-bold">
+                    Direct WhatsApp Communication
                   </span>
-                  <span className="text-sm font-semibold text-warmWhite block">
+                  <span className="text-sm font-bold text-ivory truncate block group-hover:text-gold transition-colors">
                     {phone}
                   </span>
                 </div>
               </a>
 
-              {/* Direct LinkedIn Button */}
+              {/* LinkedIn */}
               <a
                 href={linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 p-4 rounded-xl bg-graphite-surface border border-platinum/10 hover:border-sky-500/50 hover:bg-graphite transition-all group"
+                onMouseEnter={() => sound.playHover()}
+                onClick={() => sound.playClick()}
+                className="flex items-center gap-4 p-4 rounded-xl bg-charcoal border border-hairline hover:border-gold/50 transition-all duration-300 group shadow-luxury-card hover:-translate-y-0.5"
               >
-                <div className="p-3 rounded-lg bg-obsidian border border-platinum/10 text-sky-400 group-hover:scale-110 transition-transform">
+                <div className="p-3 rounded-lg bg-obsidian border border-hairline text-gold group-hover:bg-gold group-hover:text-obsidian transition-colors">
                   <Linkedin className="w-5 h-5" />
                 </div>
-                <div>
-                  <span className="text-[11px] font-mono text-platinum-muted uppercase block">
-                    LinkedIn Profile
+                <div className="overflow-hidden">
+                  <span className="text-[10px] text-softGray uppercase tracking-widest block font-bold">
+                    Professional LinkedIn Profile
                   </span>
-                  <span className="text-sm font-semibold text-warmWhite block">
+                  <span className="text-sm font-bold text-ivory truncate block group-hover:text-gold transition-colors">
                     linkedin.com/in/zefanya-zulian
                   </span>
                 </div>
               </a>
             </div>
 
-            {/* Quick CV Download Action */}
+            {/* Quick CV Download Action in Contact */}
             <div className="pt-2">
               <button
-                onClick={() => setIsCvModalOpen(true)}
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 text-xs font-mono font-semibold uppercase text-platinum hover:text-white bg-graphite border border-platinum/20 hover:border-crimson rounded-xl transition shadow-sm"
+                onClick={() => {
+                  sound.playClick();
+                  setIsCvModalOpen(true);
+                }}
+                className="w-full py-3.5 px-6 rounded-full bg-gold hover:bg-gold-light text-obsidian font-sans text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-gold-subtle transition-all duration-300 hover:scale-102 active:scale-98"
               >
-                <Download className="w-4 h-4 text-crimson" />
-                <span>{locale === 'id' ? 'Buka & Unduh Dokumen CV' : 'Open & Download Verified CV'}</span>
+                <Download size={14} />
+                <span>DOWNLOAD CURRICULUM VITAE (PDF)</span>
               </button>
             </div>
           </div>
 
-          {/* Right Column: Interactive Direct Message Form */}
+          {/* Right Column: Professional Intake Form (7 Cols) */}
           <div className="lg:col-span-7">
-            <div className="p-8 sm:p-10 rounded-2xl bg-graphite-surface/90 border border-platinum/15 shadow-card-executive relative backdrop-blur-md">
-              <h3 className="text-xl sm:text-2xl font-bold text-warmWhite tracking-tight">
-                {locale === 'id' ? 'Kirim Pesan atau Penawaran Kerja Sama' : 'Send an Executive Inquiry'}
-              </h3>
-              <p className="text-xs sm:text-sm text-platinum-muted mt-1 mb-6">
+            <div className="p-8 sm:p-10 rounded-2xl bg-charcoal border border-hairline shadow-luxury-card relative">
+              <div className="flex items-center justify-between pb-3 mb-5 border-b border-hairline text-xs font-sans text-softGray">
+                <div className="flex items-center gap-2 text-gold font-bold">
+                  <ShieldCheck size={14} />
+                  <span>EXECUTIVE INQUIRY DESK</span>
+                </div>
+                <div className="font-mono text-[11px]">STATUS: CONFIDENTIAL</div>
+              </div>
+
+              <h3 className="text-xl sm:text-2xl font-serif font-bold text-ivory tracking-tight">
                 {locale === 'id'
-                  ? 'Silakan isi form di bawah ini. Pesan Anda akan tersimpan langsung di sistem manajemen portofolio.'
-                  : 'Please complete the form below. Your message will be logged securely in the portfolio management system.'}
+                  ? 'Kirim Pesan atau Diskusi Kemitraan'
+                  : locale === 'en'
+                  ? 'Send a Message or Business Inquiry'
+                  : '提交高管业务接洽或合作方案'}
+              </h3>
+              <p className="text-xs sm:text-sm text-softGray mt-1 mb-6 font-sans">
+                {locale === 'id'
+                  ? 'Pesan Anda akan langsung tercatat di Admin Inbox dan direspons secara profesional.'
+                  : locale === 'en'
+                  ? 'Your submission is securely dispatched directly to the Executive Inbox for prompt response.'
+                  : '您的留言将直接加密存入高管专属消息管理系统，我们将尽快回复。'}
               </p>
 
               {status === 'success' && (
-                <div className="mb-6 p-4 rounded-xl bg-emerald-950/60 border border-emerald-500/40 flex items-start gap-3 text-emerald-200">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                  <div className="text-sm">
-                    <p className="font-semibold">
-                      {locale === 'id' ? 'Pesan Berhasil Terkirim!' : 'Inquiry Successfully Sent!'}
+                <div className="mb-6 p-4 rounded-xl bg-gold/15 border border-gold/40 flex items-start gap-3 text-ivory animate-fadeIn">
+                  <CheckCircle2 className="w-5 h-5 text-gold shrink-0 mt-0.5" />
+                  <div className="text-sm font-sans">
+                    <p className="font-bold text-gold">
+                      {locale === 'id' ? 'Pesan Berhasil Terkirim!' : locale === 'en' ? 'Inquiry Successfully Sent!' : '留言已成功送达！'}
                     </p>
-                    <p className="text-xs mt-1 text-emerald-300">
+                    <p className="text-xs mt-1 text-softGray">
                       {locale === 'id'
-                        ? 'Terima kasih atas pesan Anda. Zefanya Zulian akan segera merespons melalui email yang dicantumkan.'
-                        : 'Thank you for reaching out. Zefanya Zulian will follow up via your provided email.'}
+                        ? 'Terima kasih atas pesan Anda. Zefanya Zulian akan segera menindaklanjuti melalui email yang Anda berikan.'
+                        : locale === 'en'
+                        ? 'Thank you for your inquiry. Zefanya Zulian will follow up via your specified email address.'
+                        : '感谢您的联系。Zefanya Zulian 将通过您填写的电子邮箱及时跟进回复。'}
                     </p>
                   </div>
                 </div>
               )}
 
               {status === 'error' && (
-                <div className="mb-6 p-4 rounded-xl bg-crimson-dark/40 border border-crimson/50 flex items-start gap-3 text-red-200">
-                  <AlertCircle className="w-5 h-5 text-crimson-light shrink-0 mt-0.5" />
-                  <p className="text-sm font-medium">{errorMessage}</p>
+                <div className="mb-6 p-4 rounded-xl bg-red-950/60 border border-red-500/50 flex items-start gap-3 text-red-200 animate-fadeIn">
+                  <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                  <p className="text-sm font-sans">{errorMessage}</p>
                 </div>
               )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-platinum-muted mb-1.5">
-                      {locale === 'id' ? 'Nama Lengkap *' : 'Your Full Name *'}
+                    <label className="block text-xs font-sans uppercase tracking-wider text-softGray mb-1.5 font-bold">
+                      {locale === 'id' ? 'Nama Lengkap *' : locale === 'en' ? 'Full Name *' : '您的姓名 *'}
                     </label>
                     <input
                       type="text"
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="e.g. John Doe"
-                      className="w-full px-4 py-3 rounded-xl bg-obsidian border border-platinum/15 text-warmWhite placeholder-platinum-muted/40 text-sm focus:border-crimson focus:outline-none transition"
+                      placeholder="e.g. Ir. Budi Pratama"
+                      className="w-full px-4 py-3 rounded-xl bg-obsidian border border-hairline text-ivory placeholder-softGray/50 text-sm focus:border-gold focus:outline-none transition font-sans"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-platinum-muted mb-1.5">
-                      {locale === 'id' ? 'Alamat Email *' : 'Work Email *'}
+                    <label className="block text-xs font-sans uppercase tracking-wider text-softGray mb-1.5 font-bold">
+                      {locale === 'id' ? 'Alamat Email *' : locale === 'en' ? 'Email Address *' : '电子邮箱 *'}
                     </label>
                     <input
                       type="email"
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="e.g. contact@company.com"
-                      className="w-full px-4 py-3 rounded-xl bg-obsidian border border-platinum/15 text-warmWhite placeholder-platinum-muted/40 text-sm focus:border-crimson focus:outline-none transition"
+                      placeholder="e.g. executive@company.com"
+                      className="w-full px-4 py-3 rounded-xl bg-obsidian border border-hairline text-ivory placeholder-softGray/50 text-sm focus:border-gold focus:outline-none transition font-sans"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-mono uppercase tracking-wider text-platinum-muted mb-1.5">
-                    {locale === 'id' ? 'Perusahaan / Perihal' : 'Company or Subject'}
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    placeholder="e.g. Operations Collaboration / Executive Opportunity"
-                    className="w-full px-4 py-3 rounded-xl bg-obsidian border border-platinum/15 text-warmWhite placeholder-platinum-muted/40 text-sm focus:border-crimson focus:outline-none transition"
-                  />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-sans uppercase tracking-wider text-softGray mb-1.5 font-bold">
+                      {locale === 'id' ? 'Perusahaan / Organisasi' : locale === 'en' ? 'Company / Organization' : '所属企业 / 机构名称'}
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.organization}
+                      onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+                      placeholder="e.g. PT Konstruksi Nusantara"
+                      className="w-full px-4 py-3 rounded-xl bg-obsidian border border-hairline text-ivory placeholder-softGray/50 text-sm focus:border-gold focus:outline-none transition font-sans"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-sans uppercase tracking-wider text-softGray mb-1.5 font-bold">
+                      {locale === 'id' ? 'Kategori Kontak' : locale === 'en' ? 'Inquiry Category' : '业务接洽类别'}
+                    </label>
+                    <select
+                      value={formData.category}
+                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl bg-obsidian border border-hairline text-ivory text-sm focus:border-gold focus:outline-none transition font-sans"
+                    >
+                      {inquiryCategories.map((cat) => (
+                        <option key={cat.id} value={cat.id} className="bg-charcoal text-ivory">
+                          {cat.label[locale] || cat.label.id}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono uppercase tracking-wider text-platinum-muted mb-1.5">
-                    {locale === 'id' ? 'Pesan / Catatan *' : 'Your Message *'}
+                  <label className="block text-xs font-sans uppercase tracking-wider text-softGray mb-1.5 font-bold">
+                    {locale === 'id' ? 'Pesan / Deskripsi Kebutuhan *' : locale === 'en' ? 'Detailed Message *' : '详细需求说明 *'}
                   </label>
                   <textarea
                     required
@@ -241,30 +326,33 @@ export default function ContactSection() {
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder={
                       locale === 'id'
-                        ? 'Jelaskan tujuan diskusi, proyek pengadaan, atau kebutuhan operasional Anda...'
-                        : 'Describe your project, operations agenda, or partnership discussion...'
+                        ? 'Tuliskan rincian agenda, ruang lingkup proyek, atau tawaran kerja sama Anda...'
+                        : locale === 'en'
+                        ? 'Please outline the project scope, operational challenge, or partnership proposal...'
+                        : '请详细阐述项目需求、运营统筹场景或商务合作设想...'
                     }
-                    className="w-full px-4 py-3 rounded-xl bg-obsidian border border-platinum/15 text-warmWhite placeholder-platinum-muted/40 text-sm focus:border-crimson focus:outline-none transition resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-obsidian border border-hairline text-ivory placeholder-softGray/50 text-sm focus:border-gold focus:outline-none transition resize-none font-sans"
                   />
                 </div>
 
-                <button
-                  type="submit"
-                  disabled={status === 'loading'}
-                  className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl bg-gradient-to-r from-crimson to-crimson-dark text-white font-semibold text-sm shadow-glow-crimson hover:brightness-110 active:scale-98 transition disabled:opacity-50"
-                >
-                  {status === 'loading' ? (
-                    <span>{locale === 'id' ? 'Mengirimkan...' : 'Sending Inquiry...'}</span>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4" />
-                      <span>{locale === 'id' ? 'Kirim Pesan Sekarang' : 'Send Executive Inquiry'}</span>
-                    </>
-                  )}
-                </button>
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={status === 'loading'}
+                    className="w-full inline-flex items-center justify-center gap-2 py-4 px-6 rounded-full bg-gold hover:bg-gold-light text-obsidian font-sans font-bold tracking-wider uppercase text-xs transition-all duration-300 hover:shadow-gold-subtle disabled:opacity-50"
+                  >
+                    <Send className="w-4 h-4 text-obsidian" />
+                    <span>
+                      {status === 'loading'
+                        ? (locale === 'id' ? 'MENGIRIM PESAN...' : locale === 'en' ? 'TRANSMITTING...' : '正在提交...')
+                        : (locale === 'id' ? 'KIRIM PESAN SEKARANG' : locale === 'en' ? 'SUBMIT INQUIRY' : '立即提交接洽留言')}
+                    </span>
+                  </button>
+                </div>
               </form>
             </div>
           </div>
+
         </div>
       </div>
     </section>
