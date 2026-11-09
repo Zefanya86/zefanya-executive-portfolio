@@ -16,7 +16,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "$d = Get-Date -Format 'y
 
 echo.
 echo [3/3] Mem-push perubahan ke GitHub (Zefanya86/zefanya-executive-portfolio)...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$token = (gh auth token).Trim(); git -c credential.helper= -c credential.https://github.com.helper= push \"https://Zefanya86:$token@github.com/Zefanya86/zefanya-executive-portfolio.git\" main"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$token = (gh auth token).Trim(); git remote set-url origin \"https://Zefanya86:$token@github.com/Zefanya86/zefanya-executive-portfolio.git\"; git -c credential.helper= -c credential.https://github.com.helper= push -u origin main; git remote set-url origin 'https://github.com/Zefanya86/zefanya-executive-portfolio.git'"
 
 echo.
 echo ======================================================================
