@@ -1,7 +1,7 @@
 @echo off
 title Auto Push to GitHub - Zefanya Executive Portfolio
 echo ======================================================================
-echo   ZEFANYA ZULIAN - AUTO SYNC & PUSH TO GITHUB (Zefanya86)
+echo   ZEFANYA ZULIAN - AUTO SYNC AND PUSH TO GITHUB (Zefanya86)
 echo ======================================================================
 echo.
 
