@@ -50,6 +50,10 @@ class SoundManager {
     }
   }
 
+  public hover() {
+    this.playHover();
+  }
+
   public playClick() {
     if (!this.enabled) return;
     try {
@@ -69,6 +73,10 @@ class SoundManager {
     } catch {
       // Ignore
     }
+  }
+
+  public click() {
+    this.playClick();
   }
 
   public playSuccess() {

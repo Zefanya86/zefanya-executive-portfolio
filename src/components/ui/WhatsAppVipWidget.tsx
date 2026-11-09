@@ -21,7 +21,7 @@ export default function WhatsAppVipWidget() {
   const [senderName, setSenderName] = useState('');
   const [customNote, setCustomNote] = useState('');
 
-  const waNumber = data.contact?.whatsappNumber || '6289681852453';
+  const waNumber = data.contact?.whatsappNumber || data.contact?.whatsapp || '6289681852453';
 
   const topics = [
     {

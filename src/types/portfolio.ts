@@ -284,6 +284,7 @@ export interface ContactData {
   email: string;
   phone: string;
   whatsapp: string;
+  whatsappNumber?: string;
   linkedinUrl: string;
   availabilityStatus: LocalizedString;
 }
